@@ -92,7 +92,8 @@ const Scene: React.FC<{
   coinRotationY: number;
   coinRotationZ: number;
   progress: number;
-}> = ({ coins, coinRotationX, coinRotationY, coinRotationZ, progress }) => {
+  controlsRef: React.MutableRefObject<any>;
+}> = ({ coins, coinRotationX, coinRotationY, coinRotationZ, progress, controlsRef }) => {
   return (
     <>
       <ambientLight intensity={0.8} />
@@ -115,7 +116,7 @@ const Scene: React.FC<{
       ))}
 
       <ContactShadows position={[0, 0.01, 0]} opacity={0.4} scale={10} blur={2} far={2} color="#000000" />
-      <OrbitControls enableZoom={true} enablePan={true} enableRotate={true} />
+      <OrbitControls ref={controlsRef} enableZoom={true} enablePan={true} enableRotate={true} />
     </>
   );
 };
