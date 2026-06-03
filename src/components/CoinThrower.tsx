@@ -7,23 +7,38 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 // 全局预加载模型（所有实例共享同一个 GLTF）
 let cachedGLTF: GLTF | null = null;
+let cachedLoadError: boolean = false;
 
 const MODEL_URL = `${import.meta.env.BASE_URL}models/model-final.glb`;
 
+type LoadState = 'loading' | 'loaded' | 'error';
+
 const useSharedGLTF = () => {
   const [gltf, setGltf] = useState<GLTF | null>(cachedGLTF);
+  const [loadState, setLoadState] = useState<LoadState>(cachedGLTF ? 'loaded' : cachedLoadError ? 'error' : 'loading');
+
   useEffect(() => {
-    if (cachedGLTF) return;
+    if (cachedGLTF || cachedLoadError) return;
     const loader = new GLTFLoader();
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath(`${import.meta.env.BASE_URL}draco/`);
     loader.setDRACOLoader(dracoLoader);
-    loader.load(MODEL_URL, (result) => {
-      cachedGLTF = result;
-      setGltf(result);
-    });
+    loader.load(
+      MODEL_URL,
+      (result) => {
+        cachedGLTF = result;
+        setGltf(result);
+        setLoadState('loaded');
+      },
+      undefined,
+      (error) => {
+        console.error('Failed to load 3D coin model:', error);
+        cachedLoadError = true;
+        setLoadState('error');
+      },
+    );
   }, []);
-  return gltf;
+  return { gltf, loadState };
 };
 
 interface CoinData {
@@ -89,6 +104,28 @@ const Coin: React.FC<{
 };
 
 // 主场景
+// Fallback：模型加载失败时渲染简单铜钱几何体
+const FallbackCoin: React.FC<{ position: [number, number, number]; isMobile?: boolean }> = ({ position, isMobile }) => {
+  const s = isMobile ? 0.36 : 0.42;
+  return (
+    <group position={position} scale={[s, s, s]}>
+      <mesh>
+        <cylinderGeometry args={[0.5, 0.5, 0.08, 32]} />
+        <meshStandardMaterial color="#d4a853" metalness={0.8} roughness={0.3} />
+      </mesh>
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.48, 0.48, 0.04, 4]} />
+        <meshStandardMaterial color="#b8943a" metalness={0.9} roughness={0.2} />
+      </mesh>
+      <mesh>
+        <ringGeometry args={[0.3, 0.4, 8]} />
+        <meshStandardMaterial color="#b8943a" metalness={0.7} roughness={0.4} side={THREE.DoubleSide} />
+      </mesh>
+    </group>
+  );
+};
+
+// 主场景
 const Scene: React.FC<{
   coins: CoinData[];
   coinRotationX: number;
@@ -97,10 +134,11 @@ const Scene: React.FC<{
   progress: number;
   controlsRef: React.MutableRefObject<any>;
   modelScene: THREE.Group | null;
+  useFallback: boolean;
   isMobile?: boolean;
-}> = ({ coins, coinRotationX, coinRotationY, coinRotationZ, progress, controlsRef, modelScene, isMobile }) => {
+}> = ({ coins, coinRotationX, coinRotationY, coinRotationZ, progress, controlsRef, modelScene, useFallback, isMobile }) => {
 
-  if (!modelScene) {
+  if (!modelScene && !useFallback) {
     return null;
   }
 
@@ -110,20 +148,24 @@ const Scene: React.FC<{
       <directionalLight position={[5, 8, 5]} castShadow intensity={1.5} shadow-mapSize={[1024, 1024]} />
       <pointLight position={[-3, 5, -3]} intensity={0.6} color="#ffd700" />
 
-      {coins.map(coin => (
-        <Coin
-          key={coin.id}
-          position={coin.targetPos}
-          rotationX={coinRotationX}
-          rotationY={coinRotationY}
-          rotationZ={coinRotationZ}
-          isHeads={coin.isHeads}
-          progress={progress}
-          totalSpin={coin.totalSpin}
-          model={modelScene}
-          isMobile={isMobile}
-        />
-      ))}
+      {useFallback
+        ? coins.map(coin => (
+            <FallbackCoin key={coin.id} position={coin.targetPos} isMobile={isMobile} />
+          ))
+        : coins.map(coin => (
+            <Coin
+              key={coin.id}
+              position={coin.targetPos}
+              rotationX={coinRotationX}
+              rotationY={coinRotationY}
+              rotationZ={coinRotationZ}
+              isHeads={coin.isHeads}
+              progress={progress}
+              totalSpin={coin.totalSpin}
+              model={modelScene!}
+              isMobile={isMobile}
+            />
+          ))}
 
       <ContactShadows position={[0, 0.01, 0]} opacity={0.4} scale={10} blur={2} far={2} color="#000000" />
       <OrbitControls ref={controlsRef} enableZoom={true} enablePan={true} enableRotate={true} />
@@ -142,8 +184,9 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
   isMobile,
   augmentResult,
 }) => {
-  const gltf = useSharedGLTF();
+  const { gltf, loadState } = useSharedGLTF();
   const modelScene = gltf?.scene ?? null;
+  const useFallback = loadState === 'error';
 
   // 移动端缩小铜钱间距、拉远镜头
   const coinSpacing = isMobile ? 1.2 : 1.5;
@@ -300,7 +343,15 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
   }, [isThrowing, phase, onThrowComplete, coins]);
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full relative">
+      {/* 加载中提示 */}
+      {loadState === 'loading' && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+          <p className="text-amber-500/60 text-xs tracking-wider animate-pulse">
+            铜钱加载中...
+          </p>
+        </div>
+      )}
       <Canvas
         camera={{ position: camPos, fov: camFov }}
         gl={{ alpha: true, premultipliedAlpha: true }}
@@ -315,6 +366,7 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
           progress={progress}
           controlsRef={controlsRef}
           modelScene={modelScene}
+          useFallback={useFallback}
           isMobile={isMobile}
         />
       </Canvas>
