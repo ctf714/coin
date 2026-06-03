@@ -146,7 +146,7 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
   const modelScene = gltf?.scene ?? null;
 
   // 移动端缩小铜钱间距、拉远镜头
-  const coinSpacing = isMobile ? 0.65 : 1.5;
+  const coinSpacing = isMobile ? 0.325 : 1.5;
   // 手机端镜头拉近，确保大铜钱在屏幕内
   const camPos: [number, number, number] = isMobile ? [0, 3.5, 2.8] : [0, 4, 3.5];
   const camFov = isMobile ? 45 : 45;
