@@ -43,6 +43,7 @@ interface CoinThrowerProps {
   coinRotationZ: number;
   resetViewSignal: number;
   onModelLoaded?: () => void;
+  isMobile?: boolean;
 }
 
 // 单个铜钱组件
@@ -55,10 +56,12 @@ const Coin: React.FC<{
   progress: number;
   totalSpin: number;
   model: THREE.Group;
-}> = ({ position, rotationX, rotationY, rotationZ, isHeads, progress, totalSpin, model }) => {
+  isMobile?: boolean;
+}> = ({ position, rotationX, rotationY, rotationZ, isHeads, progress, totalSpin, model, isMobile }) => {
   const groupRef = useRef<THREE.Group>(null);
-  // 每个实例使用 clone 避免共享变换
   const clonedModel = useMemo(() => model.clone(true), [model]);
+  const s = isMobile ? [0.3, 0.3, 0.3] : [0.42, 0.42, 0.42];
+  const modelScale = isMobile ? [2.2, 2.2, 2.2] : [3, 3, 3];
 
   useFrame(() => {
     if (groupRef.current) {
@@ -66,18 +69,15 @@ const Coin: React.FC<{
     }
   });
 
-  // 计算当前旋转角度
   const spinProgress = progress < 0.85 ? progress / 0.85 : 1;
   const currentSpin = spinProgress * totalSpin;
-
-  // 反面 Y 轴翻转 180 度
   const finalRotY = isHeads ? rotationY : rotationY + Math.PI;
 
   return (
-    <group ref={groupRef} scale={[0.42, 0.42, 0.42]}>
+    <group ref={groupRef} scale={s as [number, number, number]}>
       <primitive
         object={clonedModel}
-        scale={[3, 3, 3]}
+        scale={modelScale as [number, number, number]}
         rotation={[rotationX, finalRotY + currentSpin, rotationZ]}
       />
     </group>
@@ -93,7 +93,8 @@ const Scene: React.FC<{
   progress: number;
   controlsRef: React.MutableRefObject<any>;
   modelScene: THREE.Group | null;
-}> = ({ coins, coinRotationX, coinRotationY, coinRotationZ, progress, controlsRef, modelScene }) => {
+  isMobile?: boolean;
+}> = ({ coins, coinRotationX, coinRotationY, coinRotationZ, progress, controlsRef, modelScene, isMobile }) => {
 
   if (!modelScene) {
     return null;
@@ -116,6 +117,7 @@ const Scene: React.FC<{
           progress={progress}
           totalSpin={coin.totalSpin}
           model={modelScene}
+          isMobile={isMobile}
         />
       ))}
 
@@ -133,9 +135,15 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
   coinRotationZ,
   resetViewSignal,
   onModelLoaded,
+  isMobile,
 }) => {
   const gltf = useSharedGLTF();
   const modelScene = gltf?.scene ?? null;
+
+  // 移动端缩小铜钱间距、拉远镜头
+  const coinSpacing = isMobile ? 1.1 : 1.5;
+  const camPos: [number, number, number] = isMobile ? [0, 5, 5] : [0, 4, 3.5];
+  const camFov = isMobile ? 42 : 45;
 
   // 模型加载完成通知父组件
   useEffect(() => {
@@ -144,17 +152,17 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
     }
   }, [modelScene, onModelLoaded]);
 
-  const [coins, setCoins] = useState<CoinData[]>([
-    { id: 1, basePos: [-1.5, 0.1, 0], targetPos: [-1.5, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
+  const [coins, setCoins] = useState<CoinData[]>(() => [
+    { id: 1, basePos: [-coinSpacing, 0.1, 0], targetPos: [-coinSpacing, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
     { id: 2, basePos: [0, 0.1, 0], targetPos: [0, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
-    { id: 3, basePos: [1.5, 0.1, 0], targetPos: [1.5, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
+    { id: 3, basePos: [coinSpacing, 0.1, 0], targetPos: [coinSpacing, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
   ]);
 
   const [phase, setPhase] = useState<'idle' | 'shaking' | 'done'>('idle');
   const [progress, setProgress] = useState(0);
   const controlsRef = useRef<any>(null);
   const animationFrameRef = useRef<number | null>(null);
-  const defaultCameraPosition = useRef<[number, number, number]>([0, 4, 3.5]);
+  const defaultCameraPosition = useRef<[number, number, number]>(camPos);
   const defaultTarget = useRef<[number, number, number]>([0, 0, 0]);
 
   const animateResetView = () => {
@@ -266,7 +274,7 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
 
   return (
     <div className="w-full h-full">
-      <Canvas camera={{ position: [0, 4, 3.5], fov: 45 }} gl={{ alpha: true }}>
+      <Canvas camera={{ position: camPos, fov: camFov }} gl={{ alpha: true }}>
         <Scene
           coins={coins}
           coinRotationX={coinRotationX}
@@ -275,6 +283,7 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
           progress={progress}
           controlsRef={controlsRef}
           modelScene={modelScene}
+          isMobile={isMobile}
         />
       </Canvas>
     </div>

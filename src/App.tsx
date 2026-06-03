@@ -77,7 +77,7 @@ const GuaLines: React.FC<{
 }> = ({ trigrams, changedTrigrams, arrowVisible, isMobile }) => {
   const m = isMobile;
   return (
-  <div className={m ? 'space-y-2' : 'space-y-2.5'}>
+  <div className={m ? 'flex flex-col items-center gap-2' : 'flex flex-col items-center gap-2.5'}>
     {[5, 4, 3, 2, 1, 0].map((pos) => {
       const t = trigrams[pos];
       const ct = changedTrigrams?.[pos];
@@ -459,13 +459,18 @@ function App() {
           coinRotationZ={coinRotationZ}
           resetViewSignal={resetViewSignal}
           onModelLoaded={() => setModelLoaded(true)}
+          isMobile={m}
         />
       </div>
 
-      {/* 按钮 — 桌面左移，移动端贴 3D 区底部 */}
+      {/* 按钮 — 桌面左移，移动端贴 3D 区底部（抽屉打开时上移避免遮挡） */}
       <div
-        className={`absolute z-10 transition-all duration-700 ${
-          m ? 'bottom-4 left-0 right-0' : 'bottom-6 left-0'
+        className={`absolute z-20 transition-all duration-700 ${
+          m
+            ? drawerOpen
+              ? 'bottom-[44%] left-0 right-0'
+              : 'bottom-4 left-0 right-0'
+            : 'bottom-6 left-0'
         } ${
           drawerOpen
             ? m
