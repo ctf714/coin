@@ -1,0 +1,109 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{ragged2e}
+\usepackage{tikz}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setCJKmainfont{Noto Serif CJK SC}
+\setCJKsansfont{Noto Sans CJK SC}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue, citecolor=black}
+\titleformat{\section}{\large\bfseries\sffamily}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries\sffamily}{\thesubsection}{0.6em}{}
+\setlist{itemsep=2pt, topsep=4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.18}
+\definecolor{labelgray}{gray}{0.20}
+
+\newcommand{\yangline}{\tikz[baseline=-0.45ex]{\draw[line width=1.15pt] (0,0) -- (2.4em,0);}}
+\newcommand{\yinline}{\tikz[baseline=-0.45ex]{\draw[line width=1.15pt] (0,0) -- (0.92em,0); \draw[line width=1.15pt] (1.48em,0) -- (2.4em,0);}}
+\newcommand{\oldyinmark}{\tikz[baseline=-0.45ex]{\draw[line width=1.15pt] (0,0) -- (0.72em,0); \node at (1.2em,0) {\scriptsize $\times$}; \draw[line width=1.15pt] (1.68em,0) -- (2.4em,0);}}
+\newcommand{\oldyangmark}{\tikz[baseline=-0.45ex]{\draw[line width=1.15pt] (0,0) -- (0.78em,0); \node at (1.2em,0) {\scriptsize $\circ$}; \draw[line width=1.15pt] (1.62em,0) -- (2.4em,0);}}
+\newcommand{\EN}[1]{\textcolor{labelgray}{\textbf{English.}} #1}
+\newcommand{\CN}[1]{\textcolor{labelgray}{\textbf{中文。}} #1}
+\newcommand{\bipar}[2]{\EN{#1}\par\CN{#2}\par\medskip}
+
+\title{Money Hexagram Divination / 金钱卦\\\large A Bilingual Introduction in the Context of Wen Wang Gua and I Ching Divination\\文王卦与《易经》占筮语境下的中英文介绍}
+\author{Compiled from retrievable encyclopedia-style sources / 据可检索百科类资料编写}
+\date{3 June 2026 / 2026年6月3日}
+
+\begin{document}
+\maketitle
+
+\section*{Abstract / 摘要}
+\bipar{Money Hexagram Divination, usually called \textit{Jinqian Gua} in Chinese, is a coin-casting procedure for generating a six-line I Ching hexagram. In Chinese encyclopedic usage it is closely related to \textit{Wen Wang Gua}, also called \textit{Wen Wang Ke}, \textit{Najia} divination, the \textit{Huozhulin} method, or Six Lines Divination. In English reference material it corresponds most directly to I Ching divination by the three-coin method, although the technical interpretive framework of \textit{Wen Wang Gua} is more elaborate than a simple reading of the received \textit{Yijing} text.}{金钱卦通常指以钱币掷卦而成六爻卦象的占筮方法。在中文百科语境中，它与文王卦关系密切；文王卦又称文王课、纳甲筮法、火珠林法、六爻预测。若用英文资料来定位，金钱卦最接近《易经》占筮中的三钱法；但文王卦的断法并不只是阅读《易经》卦辞、爻辞，而是包含五行、六亲、世应、干支、动变等技术系统。}
+
+\section{Source note / 资料说明}
+\bipar{This introduction is based on retrievable encyclopedia-style sources: the Chinese Wikipedia article on \textit{Wen Wang Gua}, the English Wikipedia article on \textit{I Ching divination}, and the English Wikipedia article on \textit{I Ching}. The Chinese Wikipedia article explicitly says that \textit{Wen Wang Gua} commonly uses coin casting and is therefore also called \textit{Jinqian Gua}, ``Money Hexagram'' or ``Coin Hexagram.'' The English Wikipedia article on I Ching divination supplies the broader framework of six-line hexagrams, moving lines, yarrow-stalk divination, and coin divination.}{本文依据当前可检索的百科类资料整理：中文维基百科“文王卦”、英文维基百科“I Ching divination”和英文维基百科“I Ching”。下文操作表中的爻符号按《周易》阴阳爻的标准形制绘出：阳爻为不断之横画，阴爻为中断之横画；老阴仍是阴爻，但以交/六、现代常见记号 $\times$ 标明其为动爻；老阳仍是阳爻，但以重/九、现代常见记号 $\circ$ 标明其为动爻。中文维基百科“文王卦”条明言，文王卦的占卜方式多利用掷钱币进行，故又称金钱卦；英文维基百科“I Ching divination”条则提供六爻卦、动爻、蓍草法与钱币法的一般框架。}
+\bipar{A direct Baidu Baike article specifically titled \textit{Jinqian Gua} could not be reliably retrieved in the present search session. For that reason, the body of this document does not attribute any substantive claim to Baidu Baike unless it is also supported by the retrievable references listed at the end.}{本次检索未能可靠取得百度百科中以“金钱卦”为题的可核验页面。因此，下文不把任何实质性论断单独归于百度百科；凡涉及定义、方法和历史的叙述，均以文末列出的可检索资料为据。}
+
+\section{Definition and terminology / 定义与术语}
+\bipar{\textit{Jinqian Gua} literally means ``money hexagram'' or, more idiomatically, ``coin hexagram.'' The term does not denote a separate canonical book. It denotes a procedure: coins are cast in order to construct a six-line hexagram. In the \textit{Wen Wang Gua} tradition, that hexagram is then interpreted through a technical system involving the Five Phases, the six kinship relations, the self-and-response positions, calendrical factors, and auxiliary spirits or signs.}{“金钱卦”字面上即“以金钱成卦”或“钱币卦”。它通常不是指另一部经典，而是指一种起卦程序：以钱币掷得六爻，组成一卦。在文王卦传统中，所得卦象还要进入一套技术性解释系统，包括五行、六亲、世应、日月时令、六神与神煞等因素。}
+\bipar{The larger system has several names: \textit{Wen Wang Gua}, \textit{Wen Wang Ke}, \textit{Najia} divination, \textit{Huozhulin} method, and Six Lines Divination. Traditional accounts associate it with King Wen of Zhou, but encyclopedia-style descriptions connect its theoretical sources with the \textit{Jing shi Yi zhuan}, \textit{Guo shi Donglin}, and the transmitted \textit{Huozhulin} tradition.}{较大的术数系统有多种名称：文王卦、文王课、纳甲筮法、火珠林法、六爻预测等。传统说法常把它追溯到周文王；但百科类叙述更倾向于把其理论来源联系到《京氏易传》《郭氏洞林》以及后世流传的《火珠林》系统。}
+
+\section{Procedure: the three-coin method / 操作程序：三钱法}
+\bipar{The usual procedure uses three coins. A practitioner first fixes which side counts as yin and which side counts as yang. The querent then casts the three coins six times. The six results are recorded from the bottom upward, because an I Ching hexagram is constructed from the first or lowest line to the sixth or uppermost line.}{通常程序使用三枚钱币。起卦前须先约定哪一面属阴、哪一面属阳。问卜者连续掷钱六次，并从下往上记录六爻；这是因为《易》卦的六爻次序是由初爻而二、三、四、五，至上爻。}
+\bipar{Each cast yields one line. Mixed results generate young, static lines. Three identical results generate old, moving lines. If one or more old lines occur, the original hexagram is transformed: old yin changes into yang, and old yang changes into yin. The result is the changed or transformed hexagram.}{每次掷钱生成一爻。阴阳相杂者为少阴或少阳，通常为静爻；三枚皆同者为老阴或老阳，通常为动爻。如有动爻，则本卦发生变化：老阴变阳，老阳变阴，形成之卦或变卦。}
+
+\begin{center}
+\begin{tabular}{>{\RaggedRight\arraybackslash}p{0.18\linewidth} >{\RaggedRight\arraybackslash}p{0.17\linewidth} >{\centering\arraybackslash}p{0.18\linewidth} >{\RaggedRight\arraybackslash}p{0.14\linewidth} >{\RaggedRight\arraybackslash}p{0.19\linewidth}}
+\toprule
+\textbf{Coin outcome / 钱币结果} & \textbf{Line type / 爻类} & \textbf{Line symbol / 爻象符号} & \textbf{Traditional name / 传统名} & \textbf{Change / 变化} \\
+\midrule
+Two yin, one yang / 二阴一阳 & Young yin / 少阴 & \yinline & 8 / 八 & Static yin / 静阴，不变 \\
+Two yang, one yin / 二阳一阴 & Young yang / 少阳 & \yangline & 7 / 七 & Static yang / 静阳，不变 \\
+Three yin / 三阴 & Old yin / 老阴 & \oldyinmark & 6, crossing / 六，交 & Moving yin changes into yang / 动阴变阳 \\
+Three yang / 三阳 & Old yang / 老阳 & \oldyangmark & 9, double / 九，重 & Moving yang changes into yin / 动阳变阴 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\bipar{In this table the graphic line itself is always the Yijing line-form: \yinline{} for yin and \yangline{} for yang. Old yin is therefore shown as a broken yin line with a moving-line mark, not as a solid line. Old yang is shown as a solid yang line with a moving-line mark. The terms ``crossing'' (\textit{jiao}, old yin, six) and ``double'' (\textit{chong}, old yang, nine) are traditional names of moving lines.}{本表中，“爻象”本身始终使用《周易》阴阳爻形制：\yinline{} 为阴爻，\yangline{} 为阳爻。因此，老阴应画作带动爻标记的断开阴爻，而不是实线；老阳应画作带动爻标记的不断阳爻。“交”（老阴，六）与“重”（老阳，九）是动爻的传统名称。}
+
+\section{Interpretation in Wen Wang Gua / 文王卦中的断法}
+\bipar{Once the original and changed hexagrams have been established, \textit{Wen Wang Gua} interpretation normally proceeds through a technical layer not reducible to a literary reading of the \textit{Yijing}. The diviner assigns and evaluates line relations such as parents, siblings, descendants, wife/wealth, and officials/ghosts. These relations are correlated with Five-Phase generation and conquest.}{本卦与变卦既定之后，文王卦的判断通常进入一套不能化约为经文阅读的技术层面。占者要安置并评估父母、兄弟、子孙、妻财、官鬼等六亲关系，并将它们放入五行生克关系中考察。}
+\bipar{The self line and response line indicate the position of the querent and the other party or object of inquiry. Seasonal and calendrical factors are used to determine whether a line is flourishing, weak, exhausted, clashing, combining, or being overcome. The relevant line depends on the question. Documents and protection may emphasize the parent line; wealth or property may emphasize the wife/wealth line; illness, official pressure, or danger may emphasize the official/ghost line.}{世爻与应爻分别表示问卜者与相对方或所问之事。日月时令等因素用于判断某爻旺、相、休、囚、衰，或是否受冲、合、克、制。用神随问题而变：问文书、学业、庇护可重父母爻；问财物、收益可重妻财爻；问疾病、官讼、压力、危险可重官鬼爻。}
+\bipar{The final judgment is synthetic. It compares the relevant line with the calendar, moving lines, the changed hexagram, and the network of Five-Phase relations. In this sense, a hexagram is not merely a symbolic image; it is a structured field of relations.}{最终判断是综合性的。占者要把用神与日月、动爻、变卦、五行生克网络合并考察。因此，在文王卦中，卦象不只是象征图像，而是一个由爻位、关系与时令构成的结构场。}
+
+\section{Relation to general I Ching divination / 与一般《易经》占筮的关系}
+\bipar{General I Ching divination also produces six-line hexagrams, but it may use either the yarrow-stalk method or a coin method. English Wikipedia describes the three-coin method as quick, easy, and popular, while noting that it gives probabilities different from the older yarrow-stalk method.}{一般《易经》占筮同样生成六爻卦，但可用蓍草法，也可用钱币法。英文维基百科将三钱法描述为迅速、简便且流行的方法，同时指出它与较古老的蓍草法在概率分布上不同。}
+\bipar{With three fair coins, the coin method gives equal probability to old yin and old yang, and equal probability to young yin and young yang. The yarrow-stalk method does not have the same distribution. This matters because moving lines determine whether and how the original hexagram transforms into another hexagram.}{若以三枚公平钱币起卦，钱币法使老阴与老阳概率相等，也使少阴与少阳概率相等；蓍草法则分布不同。此差异并非小节，因为动爻决定本卦是否变卦以及如何变卦。}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Line type / 爻类} & \textbf{Three-coin / 三钱法} & \textbf{Yarrow-stalk / 蓍草法} \\
+\midrule
+Old yin / 老阴 & $2/16$ & $1/16$ \\
+Young yin / 少阴 & $6/16$ & $7/16$ \\
+Old yang / 老阳 & $2/16$ & $3/16$ \\
+Young yang / 少阳 & $6/16$ & $5/16$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Historical remarks / 历史说明}
+\bipar{The Chinese Wikipedia article reports that coin divination was attested by the Tang period at the latest, citing references to recording lines with coins and a story in the \textit{Taiping Guangji} involving three coins. It also presents \textit{Wen Wang Gua} as a later technical divinatory tradition whose framework was established through materials such as \textit{Huozhulin}.}{中文维基百科“文王卦”条称，传世文献表明至迟唐代已有以钱占卜的现象，并举贾公彦《仪礼》疏中“以钱记爻”的材料及《太平广记》中“三钱并舞”的故事。该条也把文王卦置于较晚近的术数传统中，认为其框架与《火珠林》等材料有关。}
+\bipar{These historical remarks should be read cautiously, because encyclopedia articles may summarize complex textual history and may themselves require further sourcing. The cautious introductory conclusion is this: coin casting is a convenient alternative to yarrow-stalk manipulation, and \textit{Wen Wang Gua} belongs to the technical, correlative tradition of Chinese divination rather than to a purely textual reading practice.}{这些历史说明宜审慎看待，因为百科条目常概括复杂的文献史，且部分内容仍需更多学术来源支持。作为入门性结论，可以较谨慎地说：钱币起卦是相对于蓍草揲蓍而言更便利的取数方法；文王卦则属于中国术数中的技术性、类比关联性占断传统，而非单纯阅读卦辞爻辞的文本实践。}
+
+\section{Summary / 总结}
+\bipar{Money Hexagram Divination is best described as a coin-based method for producing an I Ching hexagram, most often embedded in the \textit{Wen Wang Gua} or Six Lines Divination system. Its operation is simple: three coins, six casts, one original hexagram, and, if moving lines occur, one changed hexagram. Its interpretation is complex: line positions, Five-Phase relations, kinship categories, calendrical strength, and the interaction between original and changed hexagrams must all be considered.}{金钱卦最宜定义为一种以钱币生成《易》卦的起卦方法，并且在实践中常嵌入文王卦或六爻预测系统。其操作层面相当简明：三枚钱币，六次掷成，本卦一卦；若有动爻，则另成变卦。其解释层面则较复杂：爻位、五行、六亲、日月旺衰、本卦与变卦之间的关系都要纳入判断。}
+\bipar{Thus, \textit{Jinqian Gua} is simple as a casting technique but elaborate as an interpretive art. An English introduction should therefore avoid reducing it either to a generic coin toss or to a purely textual I Ching reading.}{因此，金钱卦在起卦技术上简单，在占断系统上繁复。英文介绍若要准确，应避免把它简化为普通掷硬币游戏，也不宜把它等同于只读《易经》经文的文本占筮。}
+
+\section*{References / 参考资料}
+\begin{enumerate}[label={[\arabic*]}]
+\item Chinese Wikipedia, ``Wen Wang Gua'' / 中文维基百科“文王卦”, retrieved / 检索日期: 3 June 2026. \url{https://zh.wikipedia.org/wiki/%E6%96%87%E7%8E%8B%E5%8D%A6}
+\item English Wikipedia, ``I Ching divination'', retrieved / 检索日期: 3 June 2026. \url{https://en.wikipedia.org/wiki/I_Ching_divination}
+\item English Wikipedia, ``I Ching'', retrieved / 检索日期: 3 June 2026. \url{https://en.wikipedia.org/wiki/I_Ching}
+\end{enumerate}
+
+\end{document}

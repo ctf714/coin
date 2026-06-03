@@ -2,6 +2,8 @@ import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import CoinThrower from './components/CoinThrower';
 import { Trigram, calculateFromCoinResults, getGuaNumber, getGuaName, getEnglishGuaData, getFullGuaText, getChangedTrigrams, getChangingLineIndices, boldChangingLines } from './utils/guaData';
 import { useDeviceDetect } from './useDeviceDetect';
+import { analyzeDivination, getQuotaInfo } from './services/deepseek';
+import { DivinationResponse } from './types/divination';
 
 const LABELS = {
   original:   { cn: '本卦', en: 'Original' },
@@ -16,7 +18,7 @@ const LABELS = {
 } as const;
 
 // 🔧 凶卦控制参数：0 = 永不出凶卦, 1 = 正常随机。默认 0，需要凶卦时改为 1
-const AUSPICIOUS_HEXAGRAM_RATE = 0;
+const AUSPICIOUS_HEXAGRAM_RATE = 1;
 
 // 传统凶卦列表（文王卦序）。仅控制"本卦"是否可出，变卦不受影响。
 const IN_AUSPICIOUS_HEXAGRAMS = new Set<number>([
@@ -222,6 +224,9 @@ function App() {
   const [drawerRatio, setDrawerRatio] = useState(m ? 0.42 : 1 / 3);
   const [isResizing, setIsResizing] = useState(false);
   const resizeStartRef = useRef({ startRatio: 0, startPos: 0, startSize: 0 });
+  const [question, setQuestion] = useState('');
+  const [aiResult, setAiResult] = useState<DivinationResponse | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = (showSplash || showMeditation || meditationFading || showInstruction || showDonate) ? 'hidden' : '';
@@ -253,6 +258,7 @@ function App() {
   };
 
   const handleMeditationStart = () => {
+    if (!question.trim()) return;
     setMeditationFading(true);
     setTimeout(() => {
       setShowMeditation(false);
@@ -286,6 +292,7 @@ function App() {
     if (!drawerOpen) setDrawerOpen(true);
     setCanThrow(false);
     setIsThrowing(true);
+    setAiResult(null);
   };
 
   const handleThrowComplete = (coinResults: boolean[]) => {
@@ -300,12 +307,24 @@ function App() {
     setTimeout(() => setCanThrow(true), 500);
   };
 
+  // 起卦完成后自动调用 DeepSeek 分析
+  useEffect(() => {
+    if (!done || aiResult !== null || isAnalyzing) return;
+    setIsAnalyzing(true);
+    analyzeDivination(question, trigrams, lang).then((result) => {
+      setAiResult(result);
+      setIsAnalyzing(false);
+    });
+  }, [done, aiResult, isAnalyzing, question, trigrams, lang]);
+
   const handleReset = () => {
     setTrigrams([]);
     setCanThrow(true);
     setIsThrowing(false);
     setDrawerOpen(false);
     setResetViewSignal(prev => prev + 1);
+    setAiResult(null);
+    setIsAnalyzing(false);
   };
 
   // 抽屉拖拽调整大小
@@ -448,9 +467,27 @@ function App() {
               <div className={`h-px bg-white/40 mx-auto ${m ? 'w-12 mb-5' : 'w-16 mb-6'}`} />
               <p className={`leading-relaxed text-white/85 ${m ? 'text-base mb-3' : 'text-lg mb-4'}`}>
                 {lang === 'cn'
-                  ? '专注默念所问之事约一分钟，确保意念清晰。'
-                  : 'Focus silently on your question for about a minute. Let your intention be clear and unwavering.'}
+                  ? '请写下您想问的问题，然后专注默念约一分钟。'
+                  : 'Write your question below, then focus silently for about a minute.'}
               </p>
+              {/* 问题输入框 */}
+              <div className={`mb-4 ${m ? 'px-0' : 'px-2'}`}>
+                <input
+                  type="text"
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  placeholder={lang === 'cn' ? '请输入您想问的问题…' : 'Enter your question…'}
+                  maxLength={200}
+                  className={`w-full bg-white/15 border-b-2 border-white/50 focus:border-white text-white placeholder-white/40 outline-none text-center tracking-wider transition-all ${m ? 'py-2.5 text-sm' : 'py-3 text-base'}`}
+                  style={{ background: 'rgba(255,255,255,0.08)' }}
+                  autoFocus
+                />
+                {question.length > 0 && (
+                  <div className={`text-white/30 mt-1 ${m ? 'text-[10px]' : 'text-xs'}`}>
+                    {question.length}/200
+                  </div>
+                )}
+              </div>
               <p className={`leading-relaxed text-white/50 ${m ? 'text-sm mb-6' : 'text-base mb-8'}`}>
                 {lang === 'cn'
                   ? '心诚则灵，感而遂通。'
@@ -458,7 +495,8 @@ function App() {
               </p>
               <button
                 onClick={handleMeditationStart}
-                className={`bg-white/95 text-black hover:bg-white border-none font-semibold transition-all tracking-[0.3em] ${m ? 'px-10 py-3 text-base' : 'px-14 py-3.5 text-lg'}`}
+                disabled={!question.trim()}
+                className={`bg-white/95 text-black hover:bg-white border-none font-semibold transition-all tracking-[0.3em] disabled:opacity-40 disabled:cursor-not-allowed ${m ? 'px-10 py-3 text-base' : 'px-14 py-3.5 text-lg'}`}
               >
                 {lang === 'cn' ? '问  卜' : 'C O N S U L T'}
               </button>
@@ -670,6 +708,182 @@ function App() {
             <div className={`text-black opacity-50 text-center ${m ? 'text-xs' : 'text-sm'}`}>
               {lang === 'cn' ? LABELS.noChange.cn : LABELS.noChange.en}
             </div>
+          </div>
+
+          {/* ====== DeepSeek AI 分析结果 ====== */}
+          {/* 分析中加载动画 */}
+          <div
+            className={`transition-all duration-700 overflow-hidden ${
+              isAnalyzing ? 'max-h-[999px] opacity-100 mt-3 pt-3 border-t-2 border-amber-300' : 'max-h-0 opacity-0'
+            }`}
+          >
+            {isAnalyzing && (
+              <div className="flex flex-col items-center gap-2 py-4">
+                <div className="flex gap-1.5">
+                  <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" />
+                  <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+                  <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
+                </div>
+                <p className={`text-black/50 tracking-wider ${m ? 'text-xs' : 'text-sm'}`}>
+                  {lang === 'cn' ? 'DeepSeek 正在解读卦象…' : 'DeepSeek interpreting the hexagram…'}
+                </p>
+                <p className={`text-black/25 ${m ? 'text-[9px]' : 'text-[10px]'}`}>
+                  {(() => {
+                    const q = getQuotaInfo();
+                    return lang === 'cn'
+                      ? `今日剩余 ${q.remaining}/${q.max} 次`
+                      : `Today: ${q.remaining}/${q.max} remaining`;
+                  })()}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* AI 分析完成 */}
+          <div
+            className={`transition-all duration-1000 overflow-hidden ${
+              done && aiResult ? 'max-h-[9999px] opacity-100 mt-3 pt-3 border-t-2 border-amber-400' : 'max-h-0 opacity-0'
+            }`}
+          >
+            {done && aiResult && (
+              <div className="space-y-4">
+                {/* 问题回显 */}
+                <div className={`bg-amber-50/80 border border-amber-200 px-3 py-2 ${m ? '' : ''}`}>
+                  <p className={`text-amber-800/60 ${m ? 'text-[10px]' : 'text-xs'}`}>
+                    {lang === 'cn' ? '所问之事' : 'Your Question'}
+                  </p>
+                  <p className={`text-amber-900 font-medium ${m ? 'text-sm mt-0.5' : 'text-base mt-1'}`}>"{question}"</p>
+                </div>
+
+                {/* 总结 + 吉凶 */}
+                <div className="flex items-center gap-3">
+                  <span className={`font-bold tracking-widest ${m ? 'text-sm' : 'text-base'} ${
+                    aiResult.overallFortuneCn === '吉' || aiResult.overallFortuneEn === 'Auspicious'
+                      ? 'text-green-700'
+                      : aiResult.overallFortuneCn === '凶' || aiResult.overallFortuneEn === 'Inauspicious'
+                      ? 'text-red-700'
+                      : 'text-amber-700'
+                  }`}>
+                    {lang === 'cn' ? aiResult.overallFortuneCn : aiResult.overallFortuneEn}
+                  </span>
+                  <div className="flex-1 h-px bg-black/10" />
+                  <span className={`text-black/70 ${m ? 'text-[10px]' : 'text-xs'}`}>
+                    {lang === 'cn' ? '总体趋向' : 'Overall Fortune'}
+                  </span>
+                </div>
+
+                {/* 总结语 */}
+                <p className={`text-black font-medium leading-relaxed italic ${m ? 'text-sm' : 'text-base'}`}>
+                  {lang === 'cn' ? aiResult.summaryCn : aiResult.summaryEn}
+                </p>
+
+                {/* 本卦分析 */}
+                <div>
+                  <h4 className={`text-black font-bold ${m ? 'text-xs mb-1' : 'text-sm mb-1.5'}`}>
+                    {lang === 'cn' ? '📖 本卦解读' : '📖 Original Hexagram'}
+                  </h4>
+                  <p className={`text-black/80 leading-relaxed ${m ? 'text-xs' : 'text-sm'}`}>
+                    {lang === 'cn'
+                      ? aiResult.originalHexagram.analysisCn
+                      : aiResult.originalHexagram.analysisEn}
+                  </p>
+                </div>
+
+                {/* 变卦分析 */}
+                {aiResult.changedHexagram && (
+                  <div>
+                    <h4 className={`text-black font-bold ${m ? 'text-xs mb-1' : 'text-sm mb-1.5'}`}>
+                      {lang === 'cn' ? '🔄 变卦之意' : '🔄 Changed Hexagram'}
+                    </h4>
+                    <p className={`text-black/80 leading-relaxed ${m ? 'text-xs' : 'text-sm'}`}>
+                      {lang === 'cn'
+                        ? aiResult.changedHexagram.meaningCn
+                        : aiResult.changedHexagram.meaningEn}
+                    </p>
+                  </div>
+                )}
+
+                {/* 变爻分析 */}
+                {aiResult.changingLinesAnalysis.filter(l => l.isChanging).length > 0 && (
+                  <div>
+                    <h4 className={`text-black font-bold ${m ? 'text-xs mb-1' : 'text-sm mb-1.5'}`}>
+                      {lang === 'cn' ? '⚡ 变爻详解' : '⚡ Changing Lines'}
+                    </h4>
+                    <div className="space-y-2">
+                      {aiResult.changingLinesAnalysis.filter(l => l.isChanging).map((line) => (
+                        <div key={line.lineIndex} className="bg-amber-50/60 border-l-2 border-amber-400 pl-3 py-1.5">
+                          <p className={`text-black/50 font-medium ${m ? 'text-[10px]' : 'text-xs'}`}>
+                            {lang === 'cn'
+                              ? (() => {
+                                  const labels = ['初', '二', '三', '四', '五', '上'];
+                                  const yaoName = line.yinYang === 'yang'
+                                    ? ['初九', '九二', '九三', '九四', '九五', '上九'][line.lineIndex - 1]
+                                    : ['初六', '六二', '六三', '六四', '六五', '上六'][line.lineIndex - 1];
+                                  return `第${line.lineIndex}爻 (${yaoName})`;
+                                })()
+                              : `Line ${line.lineIndex} (${line.yinYang === 'yang' ? 'Yang' : 'Yin'})`}
+                          </p>
+                          <p className={`text-black/80 leading-relaxed mt-0.5 ${m ? 'text-xs' : 'text-sm'}`}>
+                            {lang === 'cn' ? line.analysisCn : line.analysisEn}
+                          </p>
+                          <p className={`text-amber-800 leading-relaxed mt-0.5 ${m ? 'text-[10px]' : 'text-xs'}`}>
+                            {lang === 'cn' ? line.relevanceCn : line.relevanceEn}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 问卜事件分析 */}
+                <div>
+                  <h4 className={`text-black font-bold ${m ? 'text-xs mb-1' : 'text-sm mb-1.5'}`}>
+                    {lang === 'cn' ? '💭 事件解读' : '💭 Question Analysis'}
+                  </h4>
+                  <p className={`text-black/80 leading-relaxed ${m ? 'text-xs' : 'text-sm'}`}>
+                    {lang === 'cn' ? aiResult.questionAnalysisCn : aiResult.questionAnalysisEn}
+                  </p>
+                </div>
+
+                {/* 建议 */}
+                <div className="bg-amber-50/80 border border-amber-300 px-3 py-3">
+                  <h4 className={`text-black font-bold ${m ? 'text-xs mb-1' : 'text-sm mb-1.5'}`}>
+                    {lang === 'cn' ? '✨ 建议' : '✨ Advice'}
+                  </h4>
+                  <p className={`text-black/80 leading-relaxed ${m ? 'text-xs' : 'text-sm'}`}>
+                    {lang === 'cn' ? aiResult.adviceCn : aiResult.adviceEn}
+                  </p>
+                </div>
+
+                {!aiResult.success && aiResult.rateLimited && (
+                  <div className="bg-red-50/80 border border-red-300 px-3 py-3 text-center">
+                    <p className={`text-red-700 font-bold ${m ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>
+                      {lang === 'cn' ? '⏳ 请求次数已达上限' : '⏳ Rate Limit Reached'}
+                    </p>
+                    <p className={`text-red-600/80 leading-relaxed ${m ? 'text-[10px]' : 'text-xs'}`}>
+                      {aiResult.retryAfterSeconds && aiResult.retryAfterSeconds > 3600
+                        ? (lang === 'cn'
+                          ? `今日分析次数已用完，请于明日再试。以上为本地基础解读。`
+                          : `Daily analysis quota exhausted. Please try again tomorrow. Above is local interpretation.`)
+                        : aiResult.retryAfterSeconds
+                        ? (lang === 'cn'
+                          ? `请等待 ${aiResult.retryAfterSeconds} 秒后再试。以上为本地基础解读。`
+                          : `Please wait ${aiResult.retryAfterSeconds}s before retrying. Above is local interpretation.`)
+                        : (lang === 'cn'
+                          ? '暂时无法获取 AI 解读，以上为本地基础解读。'
+                          : 'AI analysis temporarily unavailable. Above is local interpretation.')}
+                    </p>
+                  </div>
+                )}
+                {!aiResult.success && !aiResult.rateLimited && (
+                  <p className={`text-amber-600/60 italic text-center ${m ? 'text-[10px]' : 'text-xs'}`}>
+                    {lang === 'cn'
+                      ? '* DeepSeek API 未连接，以上为本地基础解读。'
+                      : '* DeepSeek API not connected. Above is local basic interpretation.'}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </div>
         {/* 拖拽手柄 — 移动端在抽屉底部，桌面端在抽屉左边缘，皆不受滚动影响 */}
