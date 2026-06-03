@@ -86,7 +86,6 @@ const GuaLines: React.FC<{
       const yangH = m ? 'h-2' : 'h-2.5';
       const yinW = m ? 'w-[27px]' : 'w-[39px]';
       const yinH = m ? 'h-2' : 'h-2.5';
-      const markW = m ? 'w-4' : 'w-5';
       const markS = m ? 'text-xs' : 'text-sm';
       const gapS = m ? 'gap-0.5' : 'gap-1';
       const mlS = m ? 'ml-1' : 'ml-2';
@@ -94,25 +93,27 @@ const GuaLines: React.FC<{
       const arrS = m ? 'text-xs' : 'text-sm';
       return (
         <div key={pos} className={`flex items-center ${gapS}`}>
-          {/* 变爻标记 — 不占位，线始终居中 */}
-          {t?.changing ? (
-            <span className={`text-black font-bold ${markS} ${markW} text-center leading-none shrink-0`}>
-              {t.yinYang === 'yang' ? '○' : '×'}
-            </span>
-          ) : null}
-          {/* 本卦爻 */}
-          {t ? (
-            t.yinYang === 'yang' ? (
-              <div className={`${yangW} ${yangH} bg-black`} />
+          {/* 本卦爻 + 变爻圈叉（绝对定位，不顶飞线条） */}
+          <div className="relative">
+            {t?.changing && (
+              <span className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full text-black font-bold ${markS} text-center leading-none`}
+                style={{ width: m ? '1rem' : '1.25rem' }}>
+                {t.yinYang === 'yang' ? '○' : '×'}
+              </span>
+            )}
+            {t ? (
+              t.yinYang === 'yang' ? (
+                <div className={`${yangW} ${yangH} bg-black`} />
+              ) : (
+                <div className="flex gap-0.5">
+                  <div className={`${yinW} ${yinH} bg-black`} />
+                  <div className={`${yinW} ${yinH} bg-black`} />
+                </div>
+              )
             ) : (
-              <div className="flex gap-0.5">
-                <div className={`${yinW} ${yinH} bg-black`} />
-                <div className={`${yinW} ${yinH} bg-black`} />
-              </div>
-            )
-          ) : (
-            <div className={`${yangW} ${yangH} bg-gray-200`} />
-          )}
+              <div className={`${yangW} ${yangH} bg-gray-200`} />
+            )}
+          </div>
           {/* 箭头+变卦爻 — 起卦中不占位以保持居中，完成后出现 */}
           {hasArrow && (
             <div className={`flex items-center ${gapS} ${mlS} opacity-60`}>
