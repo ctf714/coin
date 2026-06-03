@@ -47,7 +47,7 @@ function App() {
       {/* 背景图片 */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}background.jpg)` }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}background.webp)` }}
       />
 
       {/* 3D场景 */}
@@ -63,7 +63,7 @@ function App() {
       </div>
 
       {/* 控制按钮 */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4 z-10" style={{ fontFamily: "'Noto Serif SC', serif" }}>
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4 z-10">
         <button
           onClick={handleReset}
           disabled={trigrams.length === 0}
@@ -81,7 +81,7 @@ function App() {
       </div>
 
       {/* 爻记录 - 始终显示 */}
-      <div className="absolute top-8 right-8 bg-white/90 p-5 border-2 border-black z-10 w-[240px]" style={{ fontFamily: "'Noto Serif SC', serif" }}>
+      <div className="absolute top-8 right-8 bg-white/90 p-5 border-2 border-black z-10 w-[240px]">
         <div className="text-black text-sm font-bold mb-3 text-center">
           {trigrams.length < 6 ? `已起: ${trigrams.length}/6` : '起卦完成'}
         </div>

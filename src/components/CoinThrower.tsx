@@ -2,18 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { GLTFLoader, GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
-
-// 预加载 Draco 解码器（全局单例）
-let dracoLoader: DRACOLoader | null = null;
-const getDracoLoader = () => {
-  if (!dracoLoader) {
-    dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
-  }
-  return dracoLoader;
-};
 
 // 全局预加载模型（所有实例共享同一个 GLTF）
 let cachedGLTF: GLTF | null = null;
@@ -25,7 +14,6 @@ const useSharedGLTF = () => {
   useEffect(() => {
     if (cachedGLTF) return;
     const loader = new GLTFLoader();
-    loader.setDRACOLoader(getDracoLoader());
     loader.load(MODEL_URL, (result) => {
       cachedGLTF = result;
       setGltf(result);

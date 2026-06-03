@@ -24,15 +24,4 @@ declare module 'three/examples/jsm/loaders/GLTFLoader' {
   }
 }
 
-// 为 Draco 加载器添加类型声明
-declare module 'three/examples/jsm/loaders/DRACOLoader' {
-  import { LoadingManager } from 'three';
-  export class DRACOLoader {
-    constructor(manager?: LoadingManager);
-    setDecoderPath(path: string): this;
-    setDecoderConfig(config: object): this;
-    setWorkerLimit(limit: number): this;
-    dispose(): void;
-    preload(): this;
-  }
-}
+
