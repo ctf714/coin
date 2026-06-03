@@ -141,7 +141,7 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
   const modelScene = gltf?.scene ?? null;
 
   // 移动端缩小铜钱间距、拉远镜头
-  const coinSpacing = isMobile ? 0.85 : 1.5;
+  const coinSpacing = isMobile ? 0.55 : 1.5;
   const camPos: [number, number, number] = isMobile ? [0, 5, 5] : [0, 4, 3.5];
   const camFov = isMobile ? 42 : 45;
 
@@ -230,7 +230,7 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
       });
       setCoins(newCoins);
 
-      const throwVec = new THREE.Vector3(-0.7854, 1.4312, 0.9250).normalize();
+      const throwVec = new THREE.Vector3(0, 0.45, 1).normalize();
       const totalDuration = 1600;
       const startTime = Date.now();
 

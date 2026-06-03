@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import CoinThrower from './components/CoinThrower';
 import { Trigram, calculateFromCoinResults, getGuaNumber, getGuaName, getEnglishGuaData, getFullGuaText, getChangedTrigrams, getChangingLineIndices, boldChangingLines } from './utils/guaData';
 import { useDeviceDetect } from './useDeviceDetect';
@@ -94,14 +94,12 @@ const GuaLines: React.FC<{
       const arrS = m ? 'text-xs' : 'text-sm';
       return (
         <div key={pos} className={`flex items-center ${gapS}`}>
-          {/* 变爻标记 */}
+          {/* 变爻标记 — 不占位，线始终居中 */}
           {t?.changing ? (
             <span className={`text-black font-bold ${markS} ${markW} text-center leading-none shrink-0`}>
               {t.yinYang === 'yang' ? '○' : '×'}
             </span>
-          ) : (
-            <span className={`${markW} shrink-0`} />
-          )}
+          ) : null}
           {/* 本卦爻 */}
           {t ? (
             t.yinYang === 'yang' ? (
@@ -198,6 +196,9 @@ function App() {
   const [showInstruction, setShowInstruction] = useState(false);
   const [showDonate, setShowDonate] = useState(false);
   const [sayingIndex, setSayingIndex] = useState(0);
+  const [drawerRatio, setDrawerRatio] = useState(m ? 0.42 : 1 / 3);
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeStartRef = useRef({ startRatio: 0, startPos: 0, startSize: 0 });
 
   useEffect(() => {
     document.body.style.overflow = (showSplash || showMeditation || showInstruction || showDonate) ? 'hidden' : '';
@@ -266,6 +267,55 @@ function App() {
     setDrawerOpen(false);
     setResetViewSignal(prev => prev + 1);
   };
+
+  // 抽屉拖拽调整大小
+  const effectiveRatio = m && done ? Math.max(drawerRatio, 0.6) : drawerRatio;
+
+  const handleResizeStart = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+    const client = 'touches' in e ? e.touches[0] : e;
+    const size = m ? window.innerHeight : window.innerWidth;
+    resizeStartRef.current = {
+      startRatio: effectiveRatio,
+      startPos: m ? client.clientY : client.clientX,
+      startSize: size,
+    };
+  }, [m, effectiveRatio]);
+
+  useEffect(() => {
+    if (!isResizing) return;
+    document.body.style.userSelect = 'none';
+    document.body.style.cursor = m ? 'row-resize' : 'col-resize';
+
+    const handleMove = (e: MouseEvent | TouchEvent) => {
+      const client = 'touches' in e ? e.touches[0] : (e as MouseEvent);
+      const delta = (m ? client.clientY : client.clientX) - resizeStartRef.current.startPos;
+      const pctDelta = delta / resizeStartRef.current.startSize;
+      // 桌面：向右拖=减小比例（抽屉变窄）；移动端：向下拖=增大比例（抽屉变高）
+      const newRatio = m
+        ? resizeStartRef.current.startRatio + pctDelta
+        : resizeStartRef.current.startRatio - pctDelta;
+      setDrawerRatio(Math.max(0.22, Math.min(0.55, newRatio)));
+    };
+
+    const handleUp = () => {
+      setIsResizing(false);
+      document.body.style.userSelect = '';
+      document.body.style.cursor = '';
+    };
+
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('mouseup', handleUp);
+    document.addEventListener('touchmove', handleMove as EventListener, { passive: false });
+    document.addEventListener('touchend', handleUp);
+    return () => {
+      document.removeEventListener('mousemove', handleMove);
+      document.removeEventListener('mouseup', handleUp);
+      document.removeEventListener('touchmove', handleMove as EventListener);
+      document.removeEventListener('touchend', handleUp);
+    };
+  }, [isResizing, m]);
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -430,13 +480,14 @@ function App() {
 
       {/* 3D 场景 — 桌面左移，移动端抽屉打开时整体下沉 */}
       <div
-        className={`absolute inset-0 transition-all duration-700 ${
+        className="absolute inset-0 transition-all duration-700"
+        style={
           drawerOpen
             ? m
-              ? 'top-[42%] right-0 left-0 bottom-0'
-              : 'md:right-1/3 bottom-0'
-            : 'right-0 bottom-0'
-        }`}
+              ? { top: `${effectiveRatio * 100}%` }
+              : { right: `${effectiveRatio * 100}%` }
+            : {}
+        }
       >
         {/* 铜钱上方箴言 */}
         {!showSplash && !showMeditation && (
@@ -465,15 +516,8 @@ function App() {
 
       {/* 按钮 — 桌面左移跟进抽屉，移动端始终底部 */}
       <div
-        className={`absolute z-20 transition-all duration-700 ${
-          m
-            ? 'bottom-4 left-0 right-0'
-            : 'bottom-6 left-0'
-        } ${
-          drawerOpen && !m
-            ? 'md:right-1/3 right-0'
-            : 'right-0'
-        }`}
+        className={`absolute z-20 transition-all duration-700 ${m ? 'bottom-4 left-0 right-0' : 'bottom-6 left-0'}`}
+        style={drawerOpen && !m ? { right: `${effectiveRatio * 100}%` } : { right: 0 }}
       >
         <div className={`flex justify-center ${m ? 'gap-3' : 'gap-4'}`}>
           <button
@@ -503,14 +547,33 @@ function App() {
       <div
         className={`absolute z-10 overflow-y-auto transition-all duration-700 bg-white/90 ${
           m
-            ? 'w-full h-[42%] left-0 right-0 top-0 border-b-2 border-black'
-            : 'w-1/3 top-0 right-0 bottom-0 border-l-2 border-black'
+            ? 'w-full left-0 right-0 top-0 border-b-2 border-black'
+            : 'top-0 right-0 bottom-0 border-l-2 border-black'
         } ${
           drawerOpen
             ? 'translate-x-0 translate-y-0'
             : m ? '-translate-y-full' : 'translate-x-full'
         }`}
+        style={
+          m
+            ? { height: `${effectiveRatio * 100}%` }
+            : { width: `${effectiveRatio * 100}%` }
+        }
       >
+        {/* 拖拽手柄 */}
+        {drawerOpen && (
+          <div
+            className={`absolute z-20 bg-black/10 hover:bg-black/30 transition-colors ${
+              isResizing ? 'bg-black/30' : ''
+            } ${
+              m
+                ? 'bottom-0 left-0 right-0 h-2 cursor-row-resize'
+                : 'left-0 top-0 bottom-0 w-2 cursor-col-resize'
+            }`}
+            onMouseDown={handleResizeStart}
+            onTouchStart={handleResizeStart}
+          />
+        )}
         <div className={`flex flex-col justify-center min-h-full ${m ? 'p-3' : 'p-5'}`}>
           {/* 头部：进度 + 语言切换 */}
           <div className={`flex items-center justify-between ${m ? 'mb-3' : 'mb-4'}`}>
