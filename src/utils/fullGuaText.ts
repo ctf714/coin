@@ -35,7 +35,7 @@ Use of the Nines: a host of dragons is seen, none taking the head; good fortune.
     en: `Kun: primal and through-going; favorable is the constancy of a mare. If the noble one has somewhere to go, he first loses the way and later gains a lord. In the southwest he gains companions; in the northeast he loses companions. Peaceful constancy is good fortune.
 Initial Six: treading on frost; hard ice is coming.
 Second Six: straight, square, and great; without rehearsal, nothing is unfavorable.
-Third Six: holding brilliance within, one may be steadfast. If following the king’s affairs, there is no claim of achievement, yet there is completion.
+Third Six: holding brilliance within, one may be steadfast. If following the king's affairs, there is no claim of achievement, yet there is completion.
 Fourth Six: a tied-up sack; no blame attaches, no praise.
 Fifth Six: a yellow lower garment; greatly good fortune.
 Top Six: dragons battle in the field; their blood is dark and yellow.
@@ -83,7 +83,6 @@ Top Nine: striking ignorance. It is not favorable to be a robber; it is favorabl
 上六，入于穴，有不速之客三人来。敬之，终吉。`,
     en: `Xu: there is trust; luminous success. Constancy is good fortune; favorable to cross the great river.
 Initial Nine: waiting in the outskirts; favorable to use constancy; no blame attaches.
-19
 Second Nine: waiting on the sand; some small words, yet finally good fortune.
 Third Nine: waiting in the mud; it brings robbers to arrive.
 Fourth Six: waiting in blood; coming out from the pit.
@@ -101,7 +100,7 @@ Top Six: entering the pit; three uninvited guests come. Receive them with revere
     en: `Song: there is trust, but it is blocked; be apprehensive. The middle is good fortune, the end misfortune. Favorable to see the Great Person; not favorable to cross the great river.
 Initial Six: do not prolong the affair; there are small words, but the end is good fortune.
 Second Nine: unable to prevail in contention, he returns and hides in his town of three hundred households; no disaster.
-Third Six: feeding on old virtue; constancy is perilous, yet finally good fortune. If following the king’s affairs, claim no achievement.
+Third Six: feeding on old virtue; constancy is perilous, yet finally good fortune. If following the king's affairs, claim no achievement.
 Fourth Nine: unable to prevail in contention, he returns to command and changes course; peaceful constancy is good fortune.
 Fifth Nine: contention; greatly good fortune.
 Top Nine: one may be bestowed a ceremonial belt, yet by morning it is stripped away three times.`,
@@ -148,7 +147,7 @@ Top Six: holding together without a head; misfortune.`,
 九五，有孚挛如，富以其邻。
 上九，既雨既处，尚德载，妇贞厉。月几望，君子征凶。`,
     en: `Xiao Xu: through-going. Dense clouds but no rain, coming from our western outskirts.
-Initial Nine: returning by one’s own path; what blame is there? Good fortune.
+Initial Nine: returning by one's own path; what blame is there? Good fortune.
 Second Nine: drawn back in return; good fortune.
 Third Nine: the wagon loses its spokes; husband and wife turn eyes against each other.
 Fourth Six: there is trust; blood departs and fear goes out. no blame attaches.
@@ -163,11 +162,11 @@ Top Nine: rain has fallen and things are settled; virtue is esteemed and borne. 
 九四，履虎尾，愬愬，终吉。
 九五，夬履，贞厉。
 上九，视履，考祥其旋，元吉。`,
-    en: `Lu: treading on the tiger’s tail; it does not bite the person. Through-going.
+    en: `Lu: treading on the tiger's tail; it does not bite the person. Through-going.
 Initial Nine: plain treading; to go, no blame attaches.
 Second Nine: treading a level path; for the secluded person, constancy is good fortune.
-Third Six: the one-eyed can see, the lame can tread. Treading on the tiger’s tail, it bites the person; misfortune. A warrior acts for the great ruler.
-Fourth Nine: treading on the tiger’s tail, fearful and cautious; finally good fortune.
+Third Six: the one-eyed can see, the lame can tread. Treading on the tiger's tail, it bites the person; misfortune. A warrior acts for the great ruler.
+Fourth Nine: treading on the tiger's tail, fearful and cautious; finally good fortune.
 Fifth Nine: resolute treading; constancy is perilous.
 Top Nine: observe the treading and examine the signs of return; greatly good fortune.`,
   },
@@ -185,7 +184,7 @@ Second Nine: embracing the uncultivated; crossing the river without a boat; not 
 Third Nine: no level ground without slope, no going without return. Difficult constancy; no blame attaches. Do not worry over trust; in food there is blessing.
 Fourth Six: fluttering down; not rich, yet with neighbors; not warned, yet by trust.
 Fifth Six: Di Yi gives his younger sister in marriage; with blessing, greatly good fortune.
-Top Six: the city wall falls back into the moat; do not use the army. Announce commands from one’s own town; constancy brings regret.`,
+Top Six: the city wall falls back into the moat; do not use the army. Announce commands from one's own town; constancy brings regret.`,
   },
   12: {
     cn: `否之匪人，不利君子贞，大往小来。
@@ -195,13 +194,13 @@ Top Six: the city wall falls back into the moat; do not use the army. Announce c
 九四，有命无咎，畴离祉。
 九五，休否，大人吉。其亡其亡，系于苞桑。
 上九，倾否，先否后喜。`,
-    en: `Pi: obstruction by non-persons; not favorable for the noble one’s constancy. The great goes, the small comes.
+    en: `Pi: obstruction by non-persons; not favorable for the noble one's constancy. The great goes, the small comes.
 Initial Six: pulling up grass with its roots, joined with its kind; constancy is good fortune and through-going.
 Second Six: embracing and bearing; good fortune for the small person. The Great
 Person is obstructed yet succeeds.
 Third Six: embracing shame.
-Fourth Nine: there is mandate; no blame attaches. Those of one’s kind share the blessing.
-Fifth Nine: obstruction comes to rest; good fortune for the Great Person.“It may perish, it may perish!”- tied to a clump of mulberry.
+Fourth Nine: there is mandate; no blame attaches. Those of one's kind share the blessing.
+Fifth Nine: obstruction comes to rest; good fortune for the Great Person."It may perish, it may perish!"- tied to a clump of mulberry.
 Top Nine: overturning obstruction; first blocked, afterward joy.`,
   },
   13: {
@@ -212,7 +211,7 @@ Top Nine: overturning obstruction; first blocked, afterward joy.`,
 九四，乘其墉，弗克攻，吉。
 九五，同人，先号咷而后笑，大师克相遇。
 上九，同人于郊，无悔。`,
-    en: `Fellowship with others in the open field; through-going. Favorable to cross the great river; favorable for the noble one’s constancy.
+    en: `Fellowship with others in the open field; through-going. Favorable to cross the great river; favorable for the noble one's constancy.
 Initial Nine: fellowship at the gate; no blame attaches.
 Second Six: fellowship within the clan; regret.
 Third Nine: hiding arms in the thicket, climbing the high mound; for three years no rising.
@@ -229,8 +228,7 @@ Top Nine: fellowship in the outskirts; no regret.`,
 六五，厥孚交如，威如，吉。
 上九，自天祐之，吉，无不利。`,
     en: `Great Possession: primal and through-going.
-Initial Nine: no harmful entanglement; this is not a fault. In difficulty, no blame
-52 第14 卦 attaches.
+Initial Nine: no harmful entanglement; this is not a fault. In difficulty, no blame attaches.
 Second Nine: a great cart for carrying; having somewhere to go, no blame attaches.
 Third Nine: a duke makes offering to the Son of Heaven; a small person cannot do this.
 Fourth Nine: not relying on its abundance; no blame attaches.
@@ -248,7 +246,6 @@ Top Nine: helped by Heaven; good fortune, nothing unfavorable.`,
     en: `Humility: through-going. The noble one has completion.
 Initial Six: humbly humble noble one; useful to cross the great river; good fortune.
 Second Six: humility that sounds forth; constancy is good fortune.
-55
 Third Nine: laborious humility; the noble one has completion; good fortune.
 Fourth Six: nothing unfavorable; extend humility.
 Fifth Six: not rich, yet with neighbors; favorable to use punitive action; nothing unfavorable.
@@ -264,7 +261,7 @@ Top Six: humility that sounds forth; favorable to send the army and campaign aga
 上六，冥豫，成有渝，无咎。`,
     en: `Enthusiasm: favorable to establish lords and send the army.
 Initial Six: sounding forth in enthusiasm; misfortune.
-Second Six: firm as stone; not waiting till the day ends; constancy brings good for58 第16 卦 tune.
+Second Six: firm as stone; not waiting till the day ends; constancy brings good fortune.
 Third Six: looking upward in enthusiasm; regret. Delay brings regret.
 Fourth Nine: from this enthusiasm, great gain. Do not doubt; friends gather like hair bound by a clasp.
 Fifth Six: steadfast in illness; enduring, not dying.
@@ -296,11 +293,11 @@ Top Six: bound and tied, then further fastened. The king uses this to make offer
 上九，不事王侯，高尚其事。`,
     en: `Gu: primal and through-going; favorable to cross the great river. Three days before
 Jia, three days after Jia.
-Initial Six: dealing with the father’s decay. With a son, the deceased father has no blame attaches. Perilous, yet finally good fortune.
-Second Nine: dealing with the mother’s decay; one cannot be rigidly steadfast.
-Third Nine: dealing with the father’s decay; small regret, no great blame.
-Fourth Six: indulging the father’s decay; to go brings regret.
-Fifth Six: dealing with the father’s decay; use brings praise.
+Initial Six: dealing with the father's decay. With a son, the deceased father has no blame attaches. Perilous, yet finally good fortune.
+Second Nine: dealing with the mother's decay; one cannot be rigidly steadfast.
+Third Nine: dealing with the father's decay; small regret, no great blame.
+Fourth Six: indulging the father's decay; to go brings regret.
+Fifth Six: dealing with the father's decay; use brings praise.
 Top Nine: not serving kings and lords; he holds his own affairs high.`,
   },
   19: {
@@ -328,13 +325,12 @@ Top Six: generous approach; good fortune, no blame attaches.`,
 九五，观我生，君子无咎。
 上九，观其生，君子无咎。`,
     en: `Contemplation: hands washed but offerings not yet presented; there is trust, solemn and uplifted.
-Initial Six: childish viewing; no blame attaches for the small person, regret for the
-72 第20 卦 noble one.
-Second Six: peeping contemplation; favorable for a woman’s constancy.
+Initial Six: childish viewing; no blame attaches for the small person, regret for the noble one.
+Second Six: peeping contemplation; favorable for a woman's constancy.
 Third Six: contemplating my own life-course; advance or withdraw.
 Fourth Six: contemplating the glory of the state; favorable to be a guest of the king.
 Fifth Nine: contemplating my own life-course; the noble one has no blame attaches.
-Top Nine: contemplating another’s life-course; the noble one has no blame attaches.`,
+Top Nine: contemplating another's life-course; the noble one has no blame attaches.`,
   },
   21: {
     cn: `噬嗑，亨，利用狱。
@@ -346,7 +342,6 @@ Top Nine: contemplating another’s life-course; the noble one has no blame atta
 上九，何校灭耳，凶。`,
     en: `Biting Through: through-going; favorable to use legal judgment.
 Initial Nine: feet in stocks, toes covered; no blame attaches.
-75
 Second Six: biting soft flesh, the nose covered; no blame attaches.
 Third Six: biting dried meat and meeting poison; small regret, no blame attaches.
 Fourth Nine: biting dried gristly meat and obtaining a metal arrow; favorable in difficult constancy; good fortune.
@@ -381,7 +376,6 @@ Top Nine: plain white adornment; no blame attaches.`,
 Initial Six: stripping the bed by its legs; destroying constancy, misfortune.
 Second Six: stripping the bed by its frame; destroying constancy, misfortune.
 Third Six: stripping it; no blame attaches.
-81
 Fourth Six: stripping the bed to the skin; misfortune.
 Fifth Six: a string of fish, favored through palace people; nothing unfavorable.
 Top Nine: the large fruit is not eaten; the noble one gains a carriage, the small person loses his hut.`,
@@ -431,7 +425,7 @@ Top Nine: without falsehood; action brings disaster, nothing is favorable.`,
 Initial Nine: there is peril; favorable to stop.
 Second Nine: the carriage loses its axle strap.
 Third Nine: good horses pursue; favorable in difficult constancy. Daily practice chariot and guard; favorable to set out.
-Fourth Six: the young ox’s headboard; greatly good fortune.
+Fourth Six: the young ox's headboard; greatly good fortune.
 Fifth Six: the tusk of a gelded boar; good fortune.
 Top Nine: what a road of Heaven! Through-going.`,
   },
@@ -443,7 +437,7 @@ Top Nine: what a road of Heaven! Through-going.`,
 六四，颠颐，吉。虎视眈眈，其欲逐逐，无咎。
 六五，拂经，居贞吉，不可涉大川。
 上九，由颐，厉吉，利涉大川。`,
-    en: `Nourishment: constancy is good fortune. Observe nourishment; seek the substance for one’s own mouth.
+    en: `Nourishment: constancy is good fortune. Observe nourishment; seek the substance for one's own mouth.
 Initial Nine: leaving your numinous tortoise, you watch my jaws move; misfortune.
 Second Six: inverted nourishment, contrary to the norm; seeking nourishment from the hill, to campaign is misfortune.
 Third Six: contrary nourishment; constancy misfortune. For ten years do not use it; nothing is favorable.
@@ -479,8 +473,7 @@ Top Six: exceeding in crossing, submerged over the head; misfortune, yet no blam
 Initial Six: repeated abyss, entering the pit within the pit; misfortune.
 Second Nine: the abyss has danger; seeking small gains.
 Third Six: coming and going through abyss upon abyss, perilous and blocked. Entering the pit within the pit; do not use.
-Fourth Six: a jar of wine, two bowls, using earthenware. Present simple offerings
-102 第29 卦 through the window; finally no blame attaches.
+Fourth Six: a jar of wine, two bowls, using earthenware. Present simple offerings through the window; finally no blame attaches.
 Fifth Nine: the abyss is not full; already brought level. no blame attaches.
 Top Six: bound with cords and ropes, placed among thorns. For three years not obtained; misfortune.`,
   },
@@ -545,7 +538,6 @@ Initial Six: retreating at the tail is perilous; do not set out anywhere.
 Second Six: holding fast with yellow oxhide; none can loosen it.
 Third Nine: tied retreat; illness and peril. Keeping servants is good fortune.
 Fourth Nine: good retreat; good fortune for the noble one, not for the small person.
-115
 Fifth Nine: excellent retreat; constancy brings good fortune.
 Top Nine: ample retreat; nothing unfavorable.`,
   },
@@ -561,7 +553,7 @@ Top Nine: ample retreat; nothing unfavorable.`,
 Initial Nine: strength in the toes; to campaign is misfortune. There is trust.
 Second Nine: constancy brings good fortune.
 Third Nine: the small person uses strength; the noble one uses restraint. Constancy is perilous. A ram butts the hedge and entangles its horns.
-Fourth Nine: constancy brings good fortune; regret vanishes. The hedge opens, no entanglement; strength is in the great wagon’s axle strap.
+Fourth Nine: constancy brings good fortune; regret vanishes. The hedge opens, no entanglement; strength is in the great wagon's axle strap.
 Fifth Six: losing the sheep in an open place; no regret.
 Top Six: the ram butts the hedge, unable to retreat or advance. Nothing is favorable; in hardship, good fortune.`,
   },
@@ -579,7 +571,7 @@ Second Six: advancing in sorrow; constancy brings good fortune. Receiving this g
 Third Six: the many consent; regret vanishes.
 Fourth Nine: advancing like a greedy rat; constancy perilous.
 Fifth Six: regret vanishes; do not worry over loss or gain. To go is good fortune, nothing unfavorable.
-Top Nine: advancing with the horns; use only to attack one’s own town. Perilous but good fortune, no blame attaches; constancy brings regret.`,
+Top Nine: advancing with the horns; use only to attack one's own town. Perilous but good fortune, no blame attaches; constancy brings regret.`,
   },
   36: {
     cn: `明夷，利艰贞。
@@ -605,9 +597,8 @@ Top Six: not bright but dark; first rising to heaven, afterward entering the ear
 六四，富家，大吉。
 九五，王假有家，勿恤，吉。
 上九，有孚威如，终吉。`,
-    en: `The Family: favorable for the woman’s constancy.
+    en: `The Family: favorable for the woman's constancy.
 Initial Nine: guarding the household; regret vanishes.
-129
 Second Six: no pursuit of her own; in the inner household, providing food; constancy brings good fortune.
 Third Nine: household members are stern; regret and peril, yet good fortune. Wife and children laugh; in the end regret.
 Fourth Six: enriching the household; greatly good fortune.
@@ -642,7 +633,7 @@ Go; meeting rain is good fortune.`,
 上六，往蹇来硕，吉，利见大人。`,
     en: `Obstruction: favorable in the southwest, not favorable in the northeast. Favorable to see the Great Person; constancy brings good fortune.
 Initial Six: going brings obstruction, coming brings praise.
-Second Six: the king’s servant struggles through obstruction, not for his own body’ s sake.
+Second Six: the king's servant struggles through obstruction, not for his own body' s sake.
 Third Nine: going brings obstruction, coming brings return.
 Fourth Six: going brings obstruction, coming brings connection.
 Fifth Nine: great obstruction; friends come.
@@ -708,7 +699,7 @@ Top Nine: none increases him; someone strikes him. Setting the heart without con
 九四，臀无肤，其行次且。牵羊悔亡，闻言不信。
 九五，苋陆夬夬，中行无咎。
 上六，无号，终有凶。`,
-    en: `Resolution: declared in the royal court; truthful cry, with danger. Announce from one’s own town. Not favorable to take up arms; favorable to set out.
+    en: `Resolution: declared in the royal court; truthful cry, with danger. Announce from one's own town. Not favorable to take up arms; favorable to set out.
 Initial Nine: strength in the front toes; going without victory is blame.
 Second Nine: alarmed cry; at night there are arms. Do not worry.
 Third Nine: strength in the cheekbones; there is misfortune. The noble one resolves resolutely; walking alone, meeting rain, wet and annoyed, no blame attaches.
@@ -759,7 +750,6 @@ Top Six: lamenting, tears and sniveling; no blame attaches.`,
     en: `Ascending: primal and through-going. Use this to see the Great Person; do not worry.
 Southward campaign is good fortune.
 Initial Six: sincerely ascending; greatly good fortune.
-162 第46 卦
 Second Nine: with trust, the simple offering is favorable; no blame attaches.
 Third Nine: ascending into an empty city.
 Fourth Six: the king uses this to offer at Mount Qi; good fortune, no blame attaches.
@@ -780,7 +770,7 @@ Second Nine: oppressed by wine and food; the red knee-covering is coming. Favora
 Third Six: oppressed by stone, leaning on thorns; entering his palace, not seeing his wife; misfortune.
 Fourth Nine: coming slowly, oppressed by a metal carriage. Regret, yet there is completion.
 Fifth Nine: nose-cut and foot-cut, oppressed by the scarlet knee-covering. Then slowly there is release; favorable to use sacrifice.
-Top Six: oppressed by vines, on uneasy ground. Saying“movement brings regret,” yet with regret; to campaign is good fortune.`,
+Top Six: oppressed by vines, on uneasy ground. Saying"movement brings regret," yet with regret; to campaign is good fortune.`,
   },
   48: {
     cn: `井，改邑不改井，无丧无得，往来井井。汔至，亦未繘井，羸其瓶，凶。
@@ -791,7 +781,6 @@ Top Six: oppressed by vines, on uneasy ground. Saying“movement brings regret,�
 九五，井洌，寒泉食。
 上六，井收勿幕，有孚元吉。`,
     en: `The Well: changing the town does not change the well. No loss, no gain; going and coming, welling. Nearly reached, yet the rope has not drawn from the well; the jar is broken: misfortune.
-169
 Initial Six: the well is muddy and not drunk; the old well has no birds.
 Second Nine: in the well valley one shoots small fish; the jar is cracked and leaks.
 Third Nine: the well is cleaned but not drunk; my heart is sorrowful. It can be drawn from; if the king is bright, all receive its blessing.
@@ -826,8 +815,8 @@ Top Six: the noble one changes like a leopard; the small person changes the face
     en: `Ding: primal good fortune; through-going.
 Initial Six: the cauldron overturns its feet; favorable to expel what is bad. Taking a concubine for her son; no blame attaches.
 Second Nine: the cauldron has substance. My opponent has illness and cannot approach me; good fortune.
-Third Nine: the cauldron’s ears are changed; its movement is blocked, pheasant fat not eaten. When rain comes, regret diminishes; finally good fortune.
-Fourth Nine: the cauldron breaks its legs, overturning the duke’s stew; its form is stained. Misfortune.
+Third Nine: the cauldron's ears are changed; its movement is blocked, pheasant fat not eaten. When rain comes, regret diminishes; finally good fortune.
+Fourth Nine: the cauldron breaks its legs, overturning the duke's stew; its form is stained. Misfortune.
 Fifth Six: the cauldron has yellow ears and a metal handle; favorable to maintain constancy.
 Top Nine: the cauldron has a jade handle; greatly good fortune, nothing unfavorable.`,
   },
@@ -847,7 +836,7 @@ Do not pursue; in seven days they are regained.
 Third Six: thunder leaves one unsettled; moving with the shock, no disaster.
 Fourth Nine: thunder sinks into mud.
 Fifth Six: thunder going and coming is perilous; though many are not lost, there is business.
-Top Six: thunder leaves one trembling, glancing about; to set forth brings misfortune. If the shock is not on one’s own body but on the neighbor, no blame attaches.
+Top Six: thunder leaves one trembling, glancing about; to set forth brings misfortune. If the shock is not on one's own body but on the neighbor, no blame attaches.
 Marriage alliance has words.`,
   },
   52: {
@@ -865,8 +854,7 @@ Third Nine: stilling the waist, splitting the spine; peril smokes the heart.
 Fourth Six: stilling the body; no blame attaches.
 Fifth Six: stilling the jaws; speech has order, regret vanishes.
 Top Nine: generous stillness; good fortune.
-184 第52 卦`,
-  },
+`,  },
   53: {
     cn: `渐，女归吉，利贞。
 初六，鸿渐于干，小子厉，有言，无咎。
@@ -875,7 +863,7 @@ Top Nine: generous stillness; good fortune.
 六四，鸿渐于木，或得其桷，无咎。
 九五，鸿渐于陵，妇三岁不孕。终莫之胜，吉。
 上九，鸿渐于陆，其羽可用为仪，吉。`,
-    en: `Gradual Progress: the woman’s marriage is good fortune; favorable to maintain constancy.
+    en: `Gradual Progress: the woman's marriage is good fortune; favorable to maintain constancy.
 Initial Six: the wild goose gradually approaches the shore; the young son is in peril, there are words, no blame attaches.
 Second Six: the wild goose gradually approaches the rock; eating and drinking in ease, good fortune.
 Third Nine: the wild goose gradually approaches the plateau; the husband campaigns and does not return, the wife conceives but does not rear. Misfortune. Favorable to resist robbers.
@@ -893,11 +881,10 @@ Top Nine: the wild goose gradually approaches the high land; its feathers may be
 上六，女承筐无实，士刲羊无血，无攸利。`,
     en: `The Marrying Maiden: to campaign is misfortune; nothing is favorable.
 Initial Nine: marrying the maiden as a younger sister; the lame can tread. Campaigning good fortune.
-191
-Second Nine: the one-eyed can see; favorable for the secluded person’s constancy.
+Second Nine: the one-eyed can see; favorable for the secluded person's constancy.
 Third Six: marrying the maiden as a waiting maid; she returns and marries as younger sister.
 Fourth Nine: the marrying maiden misses the time; delayed marriage has its time.
-Fifth Six: Di Yi gives his younger sister in marriage; the lady’s sleeves are not as fine as her younger sister’s. The moon nearly full; good fortune.
+Fifth Six: Di Yi gives his younger sister in marriage; the lady's sleeves are not as fine as her younger sister's. The moon nearly full; good fortune.
 Top Six: the woman carries a basket without contents; the man cuts a sheep without blood. Nothing is favorable.`,
   },
   55: {
@@ -924,10 +911,9 @@ Top Six: abundant is the house, screened is the household. Peeping through the d
 九四，旅于处，得其资斧，我心不快。
 六五，射雉，一矢亡，终以誉命。
 上九，鸟焚其巢，旅人先笑后号咷。丧牛于易，凶。`,
-    en: `The Sojourner: small success; the traveler’s constancy is good fortune.
+    en: `The Sojourner: small success; the traveler's constancy is good fortune.
 Initial Six: the traveler is petty and trivial; this is how he takes disaster.
-Second Six: the traveler reaches lodging, carrying his goods, gaining a young servant’s constancy.
-198 第56 卦
+Second Six: the traveler reaches lodging, carrying his goods, gaining a young servant's constancy.
 Third Nine: the traveler burns his lodging and loses the young servant; constancy perilous.
 Fourth Nine: the traveler in a place, gaining his goods and axe; my heart is not glad.
 Fifth Six: shooting pheasant, one arrow lost; in the end there is praise and mandate.
@@ -942,7 +928,7 @@ Top Nine: the bird burns its nest; the traveler first laughs and later wails. Lo
 九五，贞吉，悔亡，无不利。无初有终，先庚三日，后庚三日，吉。
 上九，巽在床下，丧其资斧，贞凶。`,
     en: `Xun: small success; favorable to set out; favorable to see the Great Person.
-Initial Six: advancing and retreating; favorable for the warrior’s constancy.
+Initial Six: advancing and retreating; favorable for the warrior's constancy.
 Second Nine: penetrating beneath the bed; using scribes and shamans in abundance. Good fortune, no blame attaches.
 Third Nine: repeated submissiveness; regret.
 Fourth Six: regret vanishes; hunting obtains three kinds.
@@ -965,8 +951,7 @@ Third Six: coming joy; misfortune.
 Fourth Nine: deliberating joy, not yet at peace; separating from illness brings joy.
 Fifth Nine: trust in stripping away; there is peril.
 Top Six: drawing out joy.
-205`,
-  },
+`,  },
   59: {
     cn: `涣，亨。王假有庙，利涉大川，利贞。
 初六，用拯马壮，吉。
@@ -980,7 +965,7 @@ Initial Six: use a strong horse for rescue; good fortune.
 Second Nine: dispersion rushes to his support; regret vanishes.
 Third Six: dispersing the self; no regret.
 Fourth Six: dispersing the group; greatly good fortune. Dispersion has a mound; not what ordinary thought can imagine.
-Fifth Nine: dispersing like sweat with the great command; dispersing the king’s dwelling. no blame attaches.
+Fifth Nine: dispersing like sweat with the great command; dispersing the king's dwelling. no blame attaches.
 Top Nine: dispersing the blood, going away and far out; no blame attaches.`,
   },
   60: {
@@ -998,8 +983,7 @@ Third Six: if not regulated, then sighing; no blame attaches.
 Fourth Six: peaceful limitation; through-going.
 Fifth Nine: sweet limitation; good fortune. Going has honor.
 Top Six: bitter limitation; constancy misfortune, regret vanishes.
-211`,
-  },
+`,  },
   61: {
     cn: `中孚，豚鱼吉。利涉大川，利贞。
 初九，虞吉，有它不燕。
@@ -1014,7 +998,7 @@ Second Nine: a calling crane in the shade; its young answer. I have a fine cup; 
 Third Six: meeting an opponent; perhaps drumming, perhaps stopping; perhaps weeping, perhaps singing.
 Fourth Six: the moon nearly full; the horse pair is lost. no blame attaches.
 Fifth Nine: trust binding closely; no blame attaches.
-Top Nine: the cock’s voice rises to heaven; constancy misfortune.`,
+Top Nine: the cock's voice rises to heaven; constancy misfortune.`,
   },
   62: {
     cn: `小过，亨，利贞。可小事，不可大事。飞鸟遗之音，不宜上，宜下，大吉。
@@ -1046,7 +1030,7 @@ Initial Nine: dragging the wheels, wetting the tail; no blame attaches.
 Second Six: the woman loses her carriage-screen; do not pursue. In seven days it is regained.
 Third Nine: Gaozong campaigns against Guifang; in three years he conquers it. Do not use small persons.
 Fourth Six: fine cloth has rags; be on guard all day.
-Fifth Nine: the eastern neighbor slaughtering an ox is not as good as the western neighbor’s simple offering, which truly receives blessing.
+Fifth Nine: the eastern neighbor slaughtering an ox is not as good as the western neighbor's simple offering, which truly receives blessing.
 Top Six: wetting the head; peril.`,
   },
   64: {
@@ -1062,7 +1046,7 @@ Initial Six: wetting the tail; regret.
 Second Nine: dragging the wheels; constancy brings good fortune.
 Third Six: not yet completed; to set forth brings misfortune, favorable to cross the great river.
 Fourth Nine: constancy brings good fortune, regret vanishes. Zhen is used to campaign against Guifang; after three years there are rewards in the great state.
-Fifth Six: constancy brings good fortune, no regret. The noble one’s radiance has trust; good fortune.
+Fifth Six: constancy brings good fortune, no regret. The noble one's radiance has trust; good fortune.
 Top Nine: having trust in drinking wine; no blame attaches. Wetting the head: with trust, one loses what is right.`,
   },
 };

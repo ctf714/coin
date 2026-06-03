@@ -12,8 +12,10 @@ export interface GuaData {
   code: string;
 }
 
-// 六十四卦完整数据（无重复键）
+// 六十四卦完整数据（文王序，标准二进制：上卦+下卦，阳=1 阴=0）
+// 八卦编码：乾111 兑110 离101 震001 巽011 坎010 艮100 坤000
 export const sixtyFourGua: Record<string, GuaData> = {
+  // 1-8
   '111111': { name: '乾为天', code: '乾' },
   '000000': { name: '坤为地', code: '坤' },
   '010001': { name: '水雷屯', code: '屯' },
@@ -22,60 +24,69 @@ export const sixtyFourGua: Record<string, GuaData> = {
   '111010': { name: '天水讼', code: '讼' },
   '000010': { name: '地水师', code: '师' },
   '010000': { name: '水地比', code: '比' },
-  '110111': { name: '风天小畜', code: '小畜' },
-  '111011': { name: '天泽履', code: '履' },
+  // 9-16
+  '011111': { name: '风天小畜', code: '小畜' },
+  '111110': { name: '天泽履', code: '履' },
   '000111': { name: '地天泰', code: '泰' },
   '111000': { name: '天地否', code: '否' },
-  '101111': { name: '天火同人', code: '同人' },
-  '111101': { name: '火天大有', code: '大有' },
+  '111101': { name: '天火同人', code: '同人' },
+  '101111': { name: '火天大有', code: '大有' },
   '000100': { name: '地山谦', code: '谦' },
   '001000': { name: '雷地豫', code: '豫' },
-  '011001': { name: '泽雷随', code: '随' },
-  '100110': { name: '山风蛊', code: '蛊' },
-  '000011': { name: '地泽临', code: '临' },
-  '110000': { name: '风地观', code: '观' },
+  // 17-24
+  '110001': { name: '泽雷随', code: '随' },
+  '100011': { name: '山风蛊', code: '蛊' },
+  '000110': { name: '地泽临', code: '临' },
+  '011000': { name: '风地观', code: '观' },
   '101001': { name: '火雷噬嗑', code: '噬嗑' },
   '100101': { name: '山火贲', code: '贲' },
   '100000': { name: '山地剥', code: '剥' },
   '000001': { name: '地雷复', code: '复' },
-  '100111': { name: '山天大畜', code: '大畜' },
+  // 25-32
   '111001': { name: '天雷无妄', code: '无妄' },
-  '001001': { name: '山雷颐', code: '颐' },
-  '110110': { name: '泽风大过', code: '大过' },
+  '100111': { name: '山天大畜', code: '大畜' },
+  '100001': { name: '山雷颐', code: '颐' },
+  '110011': { name: '泽风大过', code: '大过' },
   '010010': { name: '坎为水', code: '坎' },
   '101101': { name: '离为火', code: '离' },
-  '011101': { name: '泽山咸', code: '咸' },
-  '001110': { name: '雷风恒', code: '恒' },
+  '110100': { name: '泽山咸', code: '咸' },
+  '001011': { name: '雷风恒', code: '恒' },
+  // 33-40
   '111100': { name: '天山遁', code: '遁' },
   '001111': { name: '雷天大壮', code: '大壮' },
   '101000': { name: '火地晋', code: '晋' },
   '000101': { name: '地火明夷', code: '明夷' },
-  '110101': { name: '风火家人', code: '家人' },
-  '101011': { name: '火泽睽', code: '睽' },
+  '011101': { name: '风火家人', code: '家人' },
+  '101110': { name: '火泽睽', code: '睽' },
   '010100': { name: '水山蹇', code: '蹇' },
-  '001101': { name: '雷水解', code: '解' },
-  '100011': { name: '山泽损', code: '损' },
-  '110001': { name: '风雷益', code: '益' },
-  '011111': { name: '泽天夬', code: '夬' },
-  '111110': { name: '天风姤', code: '姤' },
-  '011000': { name: '泽地萃', code: '萃' },
-  '000110': { name: '地风升', code: '升' },
-  '011010': { name: '泽水困', code: '困' },
-  '010110': { name: '水风井', code: '井' },
-  '011110': { name: '泽火革', code: '革' },
-  '101110': { name: '火风鼎', code: '鼎' },
-  '001010': { name: '震为雷', code: '震' },
+  '001010': { name: '雷水解', code: '解' },
+  // 41-48
+  '100110': { name: '山泽损', code: '损' },
+  '011001': { name: '风雷益', code: '益' },
+  '110111': { name: '泽天夬', code: '夬' },
+  '111011': { name: '天风姤', code: '姤' },
+  '110000': { name: '泽地萃', code: '萃' },
+  '000011': { name: '地风升', code: '升' },
+  '110010': { name: '泽水困', code: '困' },
+  '010011': { name: '水风井', code: '井' },
+  // 49-56
+  '110101': { name: '泽火革', code: '革' },
+  '101011': { name: '火风鼎', code: '鼎' },
+  '001001': { name: '震为雷', code: '震' },
   '100100': { name: '艮为山', code: '艮' },
-  '110100': { name: '风山渐', code: '渐' },
-  '001011': { name: '雷泽归妹', code: '归妹' },
+  '011100': { name: '风山渐', code: '渐' },
+  '001110': { name: '雷泽归妹', code: '归妹' },
+  '001101': { name: '雷火丰', code: '丰' },
   '101100': { name: '火山旅', code: '旅' },
-  '110010': { name: '风水涣', code: '涣' },
-  '010011': { name: '水泽节', code: '节' },
-  '110011': { name: '风泽中孚', code: '中孚' },
+  // 57-64
+  '011011': { name: '巽为风', code: '巽' },
+  '110110': { name: '兑为泽', code: '兑' },
+  '011010': { name: '风水涣', code: '涣' },
+  '010110': { name: '水泽节', code: '节' },
+  '011110': { name: '风泽中孚', code: '中孚' },
   '001100': { name: '雷山小过', code: '小过' },
   '010101': { name: '水火既济', code: '既济' },
   '101010': { name: '火水未济', code: '未济' },
-  '011011': { name: '兑为泽', code: '兑' },
 };
 
 // 将 trigrams（从下到上：爻1→爻6）转为标准二进制码（从上到下：爻6→爻1）
@@ -94,7 +105,17 @@ export const getGuaName = (trigrams: Trigram[]): string => {
 };
 
 // 二进制码（标准序：爻6→爻1）→ 卦序号（1-64，King Wen 序）
-const guaCodeOrder = Object.keys(sixtyFourGua);
+// 必须显式列出顺序，因为 JS 的 Object.keys() 会对纯数字字符串键重新排序
+const guaCodeOrder = [
+  '111111','000000','010001','100010','010111','111010','000010','010000',
+  '011111','111110','000111','111000','111101','101111','000100','001000',
+  '110001','100011','000110','011000','101001','100101','100000','000001',
+  '111001','100111','100001','110011','010010','101101','110100','001011',
+  '111100','001111','101000','000101','011101','101110','010100','001010',
+  '100110','011001','110111','111011','110000','000011','110010','010011',
+  '110101','101011','001001','100100','011100','001110','001101','101100',
+  '011011','110110','011010','010110','011110','001100','010101','101010',
+];
 const codeToNum: Record<string, number> = {};
 guaCodeOrder.forEach((code, i) => { codeToNum[code] = i + 1; });
 
@@ -118,6 +139,45 @@ export const getFullGuaText = (trigrams: Trigram[]): FullGuaText | null => {
   const num = codeToNum[code];
   if (!num) return null;
   return fullGuaByNum[num] || null;
+};
+
+// 变卦：有变爻则翻转变爻的阴阳得到之卦，无变爻返回 null
+export const getChangedTrigrams = (trigrams: Trigram[]): Trigram[] | null => {
+  if (trigrams.length !== 6) return null;
+  const hasChanging = trigrams.some(t => t.changing);
+  if (!hasChanging) return null;
+  return trigrams.map(t =>
+    t.changing
+      ? { ...t, yinYang: t.yinYang === 'yang' ? 'yin' as const : 'yang' as const, changing: false }
+      : t
+  );
+};
+
+// 获取变爻位置（从下到上 0-based）
+export const getChangingLineIndices = (trigrams: Trigram[]): number[] =>
+  trigrams.reduce<number[]>((acc, t, i) => t.changing ? [...acc, i] : acc, []);
+
+// 爻辞行标记（从下到上 0→5）
+const cnLinePrefixes = ['初九','初六','九二','六二','九三','六三','九四','六四','九五','六五','上九','上六'];
+const enLinePrefixes = [
+  'Initial Nine','Initial Six','Second Nine','Second Six','Third Nine','Third Six',
+  'Fourth Nine','Fourth Six','Fifth Nine','Fifth Six','Top Nine','Top Six',
+];
+
+// 将文本中对应变爻的爻辞行加粗（返回 HTML 字符串）
+export const boldChangingLines = (text: string, changingIndices: number[], lang: 'cn' | 'en'): string => {
+  const prefixes = lang === 'cn' ? cnLinePrefixes : enLinePrefixes;
+  return text.split('\n').map(line => {
+    const trimmed = line.trimStart();
+    for (const idx of changingIndices) {
+      const p1 = prefixes[idx * 2];
+      const p2 = prefixes[idx * 2 + 1];
+      if (trimmed.startsWith(p1) || trimmed.startsWith(p2)) {
+        return `<b>${line}</b>`;
+      }
+    }
+    return line;
+  }).join('\n');
 };
 
 export const tossCoins = (): { result: number; yinYang: 'yin' | 'yang'; changing: boolean } => {
