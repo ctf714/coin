@@ -34,7 +34,7 @@ const Coin: React.FC<{
   isHeads: boolean;
   progress: number; // 0-1，动画进度
   totalSpin: number;
-}> = ({ position, rotationSpeed, rotationX, rotationY, rotationZ, modelPath, isHeads, progress, totalSpin }) => {
+}> = ({ position, rotationSpeed: _rotationSpeed, rotationX, rotationY, rotationZ, modelPath, isHeads, progress, totalSpin }) => {
   const mtlPath = `/models/${modelPath}/model.mtl`;
   const objPath = `/models/${modelPath}/model.obj`;
   

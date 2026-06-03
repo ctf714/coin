@@ -50,7 +50,7 @@ const TrigramRecord: React.FC<TrigramRecordProps> = ({ trigrams }) => {
     );
   };
 
-  const displayTrigrams = [...trigrams];
+  const displayTrigrams: (Trigram | null)[] = [...trigrams];
   while (displayTrigrams.length < 6) {
     displayTrigrams.push(null);
   }

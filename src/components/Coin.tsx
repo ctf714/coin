@@ -41,13 +41,13 @@ const CoinModel: React.FC<{
 
 const Coin: React.FC<CoinProps> = ({ 
   position, 
-  rotationSpeed, 
-  isHeads, 
+  rotationSpeed: _rotationSpeed, 
+  isHeads: _isHeads, 
   scale = 1,
   rotationX = -2.5133,
   rotationY = -0.6807,
   rotationZ = -3.1416,
-  id
+  id: _id
 }) => {
   const meshRef = useRef<THREE.Group>(null);
   const [targetPosition, setTargetPosition] = useState<[number, number, number]>(position);
@@ -57,8 +57,8 @@ const Coin: React.FC<CoinProps> = ({
   useFrame((_, delta) => {
     if (meshRef.current) {
       // 铜钱在桌面上旋转
-      if (rotationSpeed !== 0) {
-        setCurrentSpin(prev => prev + delta * rotationSpeed);
+      if (_rotationSpeed !== 0) {
+        setCurrentSpin(prev => prev + delta * _rotationSpeed);
       }
 
       // 平滑移动

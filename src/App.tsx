@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CoinThrower from './components/CoinThrower';
 import { Trigram, calculateFromCoinResults, getGuaName } from './utils/guaData';
 
