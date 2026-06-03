@@ -370,7 +370,7 @@ function App() {
       {/* 开屏 & 静心 共用蒙版 — 统一 bg-black/75，淡出后完全消失，无残留 */}
       {(showSplash || showMeditation || meditationFading) && (
         <div
-          className={`absolute inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm transition-opacity duration-1000 ${
+          className={`absolute inset-0 z-50 flex items-center justify-center bg-black/75 transition-opacity duration-1000 ${
             (showSplash || (showMeditation && !meditationFading)) ? 'opacity-100' : 'opacity-0'
           }`}
         >
