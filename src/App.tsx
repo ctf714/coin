@@ -378,18 +378,16 @@ function App() {
               ×
             </button>
             <p className={`text-black/50 tracking-wider mb-1 ${m ? 'text-[10px]' : 'text-xs'}`}>
-              {lang === 'cn' ? '天 機 不 可 輕 洩' : 'H E A V E N  ·  R E V E A L S  ·  N O T'}
+              天 機 不 可 輕 洩
             </p>
             <p className={`text-black font-bold tracking-widest mb-4 ${m ? 'text-base' : 'text-lg'}`}>
-              {lang === 'cn' ? '有緣之人 隨心讚賞' : 'A Gift from the Heart'}
+              有緣之人 隨心讚賞
             </p>
             <p className={`text-black/30 italic mb-4 text-center leading-relaxed ${m ? 'text-[10px]' : 'text-xs'}`}>
-              {lang === 'cn'
-                ? '卦不敢盡言，天機微露，所得皆為冥冥指引。若有所感，隨緣樂助，心誠則靈。'
-                : 'The oracle speaks but in whispers. What is revealed is but a glimpse. If moved, give freely — sincerity is the truest offering.'}
+              卦不敢盡言，天機微露，所得皆為冥冥指引。若有所感，隨緣樂助，心誠則靈。
             </p>
             <img
-              src={`${import.meta.env.BASE_URL}赞赏.jpg`}
+              src={`${import.meta.env.BASE_URL}donate.jpg`}
               alt="赞赏码"
               className={`${m ? 'w-52' : 'w-60'} rounded`}
             />
@@ -444,10 +442,10 @@ function App() {
         {!showSplash && !showMeditation && (
           <div className={`absolute left-0 right-0 z-[5] flex flex-col items-center text-center pointer-events-none ${m ? 'top-4 px-3' : 'top-6 px-4'}`}>
             <div key={sayingIndex + '_main'} className="animate-[fadeInUp_0.8s_ease-out]">
-              <div className={`text-white/25 font-medium tracking-[0.08em] leading-relaxed mb-1 ${m ? 'text-[11px]' : 'text-sm'}`}>
+              <div className={`text-amber-700/40 font-medium tracking-[0.08em] leading-relaxed mb-1 ${m ? 'text-[13px]' : 'text-base'}`}>
                 "{MYSTICAL_SAYINGS[sayingIndex].cn}"
               </div>
-              <div className={`text-white/10 tracking-[0.05em] leading-relaxed italic ${m ? 'text-[9px]' : 'text-[11px]'}`}>
+              <div className={`text-amber-600/20 tracking-[0.05em] leading-relaxed italic ${m ? 'text-[11px]' : 'text-[13px]'}`}>
                 "{MYSTICAL_SAYINGS[sayingIndex].en}"
               </div>
             </div>
