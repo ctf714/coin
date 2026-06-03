@@ -326,6 +326,9 @@ function App() {
         style={{ backgroundImage: `url(${import.meta.env.BASE_URL}background.webp)` }}
       />
 
+      {/* 持久蒙版 — 开屏/静心页之后保留暗调，不突兀变亮 */}
+      <div className="absolute inset-0 z-[2] pointer-events-none bg-black/25" />
+
       {/* 开屏介绍 — 水墨淡开 */}
       {showSplash && (
         <div
