@@ -481,7 +481,7 @@ function App() {
 
       {/* 3D 场景 — 桌面左移，移动端抽屉打开时整体下沉 */}
       <div
-        className="absolute inset-0 transition-all duration-700"
+        className={`absolute inset-0 ${isResizing ? '' : 'transition-all duration-700'}`}
         style={
           drawerOpen
             ? m
@@ -517,7 +517,7 @@ function App() {
 
       {/* 按钮 — 桌面左移跟进抽屉，移动端始终底部 */}
       <div
-        className={`absolute z-20 transition-all duration-700 ${m ? 'bottom-4 left-0 right-0' : 'bottom-6 left-0'}`}
+        className={`absolute z-20 ${isResizing ? '' : 'transition-all duration-700'} ${m ? 'bottom-4 left-0 right-0' : 'bottom-6 left-0'}`}
         style={drawerOpen && !m ? { right: `${effectiveRatio * 100}%` } : { right: 0 }}
       >
         <div className={`flex justify-center ${m ? 'gap-3' : 'gap-4'}`}>
@@ -546,7 +546,9 @@ function App() {
 
       {/* 抽屉面板 — 桌面右侧抽屉，移动端顶部抽屉（从上方滑下） */}
       <div
-        className={`absolute z-10 overflow-y-auto transition-all duration-700 bg-white/90 ${
+        className={`absolute z-10 overflow-y-auto bg-white/90 ${
+          isResizing ? '' : 'transition-all duration-700'
+        } ${
           m
             ? 'w-full left-0 right-0 top-0 border-b-2 border-black'
             : 'top-0 right-0 bottom-0 border-l-2 border-black'
