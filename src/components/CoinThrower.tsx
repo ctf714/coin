@@ -35,8 +35,8 @@ const Coin: React.FC<{
   progress: number; // 0-1，动画进度
   totalSpin: number;
 }> = ({ position, rotationSpeed: _rotationSpeed, rotationX, rotationY, rotationZ, modelPath, isHeads, progress, totalSpin }) => {
-  const mtlPath = `/models/${modelPath}/model.mtl`;
-  const objPath = `/models/${modelPath}/model.obj`;
+  const mtlPath = `${import.meta.env.BASE_URL}models/${modelPath}/model.mtl`;
+  const objPath = `${import.meta.env.BASE_URL}models/${modelPath}/model.obj`;
   
   const materials = useLoader(MTLLoader, mtlPath);
   const obj = useLoader(OBJLoader, objPath, (loader) => {

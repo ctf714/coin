@@ -44,7 +44,7 @@ function App() {
       {/* 背景图片 */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(./background.jpg)' }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}background.jpg)` }}
       />
 
       {/* 3D场景 */}
