@@ -293,7 +293,12 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
 
   return (
     <div className="w-full h-full">
-      <Canvas camera={{ position: camPos, fov: camFov }} gl={{ alpha: true }}>
+      <Canvas
+        camera={{ position: camPos, fov: camFov }}
+        gl={{ alpha: true, premultipliedAlpha: true }}
+        onCreated={({ gl }) => { gl.setClearColor(0x000000, 0); }}
+        style={{ background: 'transparent' }}
+      >
         <Scene
           coins={coins}
           coinRotationX={coinRotationX}
