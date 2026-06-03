@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect, Suspense } from 'react';
+import { useRef, useState, useEffect, Suspense } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 
 interface CoinProps {
   position: [number, number, number];
