@@ -314,10 +314,6 @@ function App() {
     analyzeDivination(question, trigrams, lang).then((result) => {
       setAiResult(result);
       setIsAnalyzing(false);
-      if (result.rateLimited && result.retryAfterSeconds && result.retryAfterSeconds > 3600) {
-        // 日配额耗尽 → 弹出赞赏
-        setTimeout(() => setShowDonate(true), 1500);
-      }
     });
   }, [done, aiResult, isAnalyzing, question, trigrams, lang]);
 
@@ -872,11 +868,14 @@ function App() {
                         ? '卜问有度，不可贪求。今日三卦已满，天道冥冥，强窥则伤身损命。感天和而止，随喜以应。'
                         : 'Divination must be measured. Three readings today are complete — the Dao is obscure, and forcing further insight harms body and fate. Rest in harmony, offer gratitude in return.'}
                     </p>
-                    <p className={`text-amber-400/50 mt-3 tracking-widest ${m ? 'text-[9px]' : 'text-[10px]'}`}>
+                    <button
+                      onClick={() => setShowDonate(true)}
+                      className={`text-amber-400/50 hover:text-amber-300/80 transition-colors mt-3 tracking-widest cursor-pointer bg-transparent border-none underline decoration-amber-400/20 hover:decoration-amber-300/50 ${m ? 'text-[9px]' : 'text-[10px]'}`}
+                    >
                       {lang === 'cn'
                         ? '— 以上为本地基础解读。赞赏随喜，以感天恩 —'
                         : '— Local interpretation above. Donate to honor Heaven\'s grace —'}
-                    </p>
+                    </button>
                   </div>
                 )}
                 {!aiResult.success && !aiResult.rateLimited && (
