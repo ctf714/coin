@@ -442,10 +442,10 @@ function App() {
         {!showSplash && !showMeditation && (
           <div className={`absolute left-0 right-0 z-[5] flex flex-col items-center text-center pointer-events-none ${m ? 'top-4 px-3' : 'top-6 px-4'}`}>
             <div key={sayingIndex + '_main'} className="animate-[fadeInUp_0.8s_ease-out]">
-              <div className={`text-amber-700/40 font-medium tracking-[0.08em] leading-relaxed mb-1 ${m ? 'text-[13px]' : 'text-base'}`}>
+              <div className={`text-amber-700/70 font-medium tracking-[0.08em] leading-relaxed mb-1 ${m ? 'text-[13px]' : 'text-base'}`}>
                 "{MYSTICAL_SAYINGS[sayingIndex].cn}"
               </div>
-              <div className={`text-amber-600/20 tracking-[0.05em] leading-relaxed italic ${m ? 'text-[11px]' : 'text-[13px]'}`}>
+              <div className={`text-amber-600/45 tracking-[0.05em] leading-relaxed italic ${m ? 'text-[11px]' : 'text-[13px]'}`}>
                 "{MYSTICAL_SAYINGS[sayingIndex].en}"
               </div>
             </div>

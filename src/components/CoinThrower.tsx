@@ -141,7 +141,7 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
   const modelScene = gltf?.scene ?? null;
 
   // 移动端缩小铜钱间距、拉远镜头
-  const coinSpacing = isMobile ? 1.1 : 1.5;
+  const coinSpacing = isMobile ? 0.85 : 1.5;
   const camPos: [number, number, number] = isMobile ? [0, 5, 5] : [0, 4, 3.5];
   const camFov = isMobile ? 42 : 45;
 
@@ -247,11 +247,10 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
             if (progress < 0.625) {
               const t = progress / 0.625;
               throwDistance = Math.sin(t * Math.PI) * 2;
-              if (t < 0.5) {
-                xOffset = Math.sin(elapsed * 0.015 + idx * 2) * 0.5 * (1 - t);
-              } else {
-                xOffset = Math.sin(elapsed * 0.008 + idx) * 0.3 * (1 - t);
-              }
+              // 单一连续抖动，频率和幅度平滑递减，消除两段跳跃
+              const shakeAmp = 0.6 * (1 - t);
+              const shakeFreq = 10 + (1 - t) * 6;
+              xOffset = Math.sin(t * shakeFreq + idx * 2.5) * shakeAmp;
             }
 
             const finalX = coin.basePos[0] + xOffset + throwVec.x * throwDistance;
