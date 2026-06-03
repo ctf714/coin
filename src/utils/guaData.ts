@@ -36,7 +36,7 @@ export const sixtyFourGua: Record<string, GuaData> = {
   '100000': { name: '山地剥', code: '剥' },
   '000001': { name: '地雷复', code: '复' },
   '100111': { name: '山天大畜', code: '大畜' },
-  '111001': { name: '天泽履', code: '天泽履' },
+  '111001': { name: '天泽履', code: '履' },
   '001001': { name: '山雷颐', code: '颐' },
   '110110': { name: '泽风大过', code: '大过' },
   '010010': { name: '坎为水', code: '坎' },
