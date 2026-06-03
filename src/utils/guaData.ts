@@ -1,3 +1,6 @@
+import { englishGuaByNum, EnglishGuaData } from './englishGuaData';
+import { fullGuaByNum, FullGuaText } from './fullGuaText';
+
 export interface Trigram {
   value: number;
   yinYang: 'yin' | 'yang';
@@ -75,10 +78,46 @@ export const sixtyFourGua: Record<string, GuaData> = {
   '011011': { name: '兑为泽', code: '兑' },
 };
 
+// 将 trigrams（从下到上：爻1→爻6）转为标准二进制码（从上到下：爻6→爻1）
+const toStandardCode = (trigrams: Trigram[]): string =>
+  [...trigrams].reverse().map(t => t.yinYang === 'yang' ? '1' : '0').join('');
+
+export const getGuaCode = (trigrams: Trigram[]): string => {
+  if (trigrams.length !== 6) return '';
+  return toStandardCode(trigrams);
+};
+
 export const getGuaName = (trigrams: Trigram[]): string => {
   if (trigrams.length !== 6) return '';
-  const code = trigrams.map(t => t.yinYang === 'yang' ? '1' : '0').join('');
+  const code = toStandardCode(trigrams);
   return sixtyFourGua[code]?.name || '未知卦';
+};
+
+// 二进制码（标准序：爻6→爻1）→ 卦序号（1-64，King Wen 序）
+const guaCodeOrder = Object.keys(sixtyFourGua);
+const codeToNum: Record<string, number> = {};
+guaCodeOrder.forEach((code, i) => { codeToNum[code] = i + 1; });
+
+export const getGuaNumber = (trigrams: Trigram[]): number | null => {
+  if (trigrams.length !== 6) return null;
+  const code = toStandardCode(trigrams);
+  return codeToNum[code] ?? null;
+};
+
+export const getEnglishGuaData = (trigrams: Trigram[]): EnglishGuaData | null => {
+  if (trigrams.length !== 6) return null;
+  const code = toStandardCode(trigrams);
+  const num = codeToNum[code];
+  if (!num) return null;
+  return englishGuaByNum[num] || null;
+};
+
+export const getFullGuaText = (trigrams: Trigram[]): FullGuaText | null => {
+  if (trigrams.length !== 6) return null;
+  const code = toStandardCode(trigrams);
+  const num = codeToNum[code];
+  if (!num) return null;
+  return fullGuaByNum[num] || null;
 };
 
 export const tossCoins = (): { result: number; yinYang: 'yin' | 'yang'; changing: boolean } => {

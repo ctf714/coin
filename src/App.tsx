@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import CoinThrower from './components/CoinThrower';
-import { Trigram, calculateFromCoinResults, getGuaName } from './utils/guaData';
+import { Trigram, calculateFromCoinResults, getGuaNumber, getGuaName, getEnglishGuaData, getFullGuaText } from './utils/guaData';
 
 function App() {
   const [trigrams, setTrigrams] = useState<Trigram[]>([]);
   const [isThrowing, setIsThrowing] = useState(false);
   const [canThrow, setCanThrow] = useState(true);
   const [resetViewSignal, setResetViewSignal] = useState(0);
+  const [lang, setLang] = useState<'cn' | 'en'>('en');
   
   // 铜钱角度状态
   const coinRotationX = -0.7854;
@@ -69,24 +70,24 @@ function App() {
           disabled={trigrams.length === 0}
           className="px-6 py-3 bg-white/90 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed text-black border-2 border-black font-medium transition-all"
         >
-          重置
+          Reset
         </button>
         <button
           onClick={handleStartThrow}
           disabled={!canThrow || isThrowing || trigrams.length >= 6}
           className="px-10 py-4 bg-white/90 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed text-black border-2 border-black font-bold text-xl transition-all"
         >
-          {isThrowing ? '摇动中...' : trigrams.length >= 6 ? '已完成' : '起卦'}
+          {isThrowing ? 'Casting...' : trigrams.length >= 6 ? 'Done' : 'Cast'}
         </button>
       </div>
 
       {/* 爻记录 - 始终显示 */}
-      <div className="absolute top-8 right-8 bg-white/90 p-5 border-2 border-black z-10 w-[240px]">
+      <div className="absolute top-8 right-8 bg-white/90 p-5 border-2 border-black z-10 w-[280px] max-h-[calc(100vh-8rem)] overflow-y-auto">
         <div className="text-black text-sm font-bold mb-3 text-center">
-          {trigrams.length < 6 ? `已起: ${trigrams.length}/6` : '起卦完成'}
+          {trigrams.length < 6 ? `Cast: ${trigrams.length}/6` : 'Complete'}
         </div>
         
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           {/* 预置6个爻位，从下往上显示，第1爻在最下面 */}
           {[5, 4, 3, 2, 1, 0].map((pos) => {
             const trigram = trigrams[pos];
@@ -104,15 +105,15 @@ function App() {
                 <div className="flex items-center">
                   {trigram ? (
                     trigram.yinYang === 'yang' ? (
-                      <div className="w-24 h-2 bg-black"></div>
+                      <div className="w-[48px] h-2 bg-black"></div>
                     ) : (
-                      <div className="flex gap-2">
-                        <div className="w-11 h-2 bg-black"></div>
-                        <div className="w-11 h-2 bg-black"></div>
+                      <div className="flex gap-0.5">
+                        <div className="w-[23px] h-2 bg-black"></div>
+                        <div className="w-[23px] h-2 bg-black"></div>
                       </div>
                     )
                   ) : (
-                    <div className="w-24 h-2 bg-gray-200"></div>
+                    <div className="w-[48px] h-2 bg-gray-200"></div>
                   )}
                 </div>
               </div>
@@ -120,13 +121,32 @@ function App() {
           })}
         </div>
         
-        {/* 卦名 */}
-        <div className="mt-4 pt-3 border-t-2 border-black text-center">
-          <div className="text-black text-xs mb-1">本卦</div>
-          <div className="text-black text-xl font-bold">
-            {trigrams.length === 6 ? getGuaName(trigrams) : '　'}
-          </div>
-        </div>
+        {/* 卦名 + 中英切换 */}
+        {trigrams.length === 6 && (() => {
+          const en = getEnglishGuaData(trigrams);
+          const full = getFullGuaText(trigrams);
+          return (
+            <div className="mt-4 pt-3 border-t-2 border-black">
+              <div className="flex items-center justify-between mb-1">
+                <div className="text-black text-xs">Hexagram #{getGuaNumber(trigrams)}</div>
+                <button
+                  onClick={() => setLang(lang === 'cn' ? 'en' : 'cn')}
+                  className="text-[10px] px-1.5 py-0.5 border border-black text-black hover:bg-black hover:text-white transition-colors leading-none"
+                >
+                  {lang === 'cn' ? '中文' : 'EN'}
+                </button>
+              </div>
+              <div className="text-black text-lg font-bold mb-2">
+                {lang === 'cn' ? getGuaName(trigrams) : en?.enName}
+              </div>
+              {full && (
+                <div className="text-black text-[11px] leading-relaxed whitespace-pre-line">
+                  {lang === 'cn' ? full.cn : full.en}
+                </div>
+              )}
+            </div>
+          );
+        })()}
       </div>
     </div>
   );
