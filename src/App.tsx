@@ -214,6 +214,7 @@ function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [splashFading, setSplashFading] = useState(false);
   const [showMeditation, setShowMeditation] = useState(false);
+  const [meditationFading, setMeditationFading] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [showInstruction, setShowInstruction] = useState(false);
   const [showDonate, setShowDonate] = useState(false);
@@ -223,9 +224,9 @@ function App() {
   const resizeStartRef = useRef({ startRatio: 0, startPos: 0, startSize: 0 });
 
   useEffect(() => {
-    document.body.style.overflow = (showSplash || showMeditation || showInstruction || showDonate) ? 'hidden' : '';
+    document.body.style.overflow = (showSplash || showMeditation || meditationFading || showInstruction || showDonate) ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [showSplash, showMeditation, showInstruction, showDonate]);
+  }, [showSplash, showMeditation, meditationFading, showInstruction, showDonate]);
 
   // 开屏页随机箴言轮播 + 主界面铜钱上方
   useEffect(() => {
@@ -252,7 +253,11 @@ function App() {
   };
 
   const handleMeditationStart = () => {
-    setShowMeditation(false);
+    setMeditationFading(true);
+    setTimeout(() => {
+      setShowMeditation(false);
+      setMeditationFading(false);
+    }, 1000);
   };
 
   const coinRotationX = -0.7854;
@@ -361,72 +366,105 @@ function App() {
         style={{ backgroundImage: `url(${import.meta.env.BASE_URL}background.webp)` }}
       />
 
-      {/* 持久蒙版 — 开屏/静心页之后保留暗调，不突兀变亮 */}
-      <div className="absolute inset-0 z-[2] pointer-events-none bg-black/25" />
 
-      {/* 开屏介绍 — 水墨淡开 */}
-      {showSplash && (
+      {/* 开屏 & 静心 共用蒙版 — 统一 bg-black/75，淡出后完全消失，无残留 */}
+      {(showSplash || showMeditation || meditationFading) && (
         <div
-          className={`absolute inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm transition-all duration-1000 ${
-            splashFading ? 'opacity-0 blur-sm' : 'opacity-100 blur-0'
+          className={`absolute inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm transition-opacity duration-1000 ${
+            (showSplash || (showMeditation && !meditationFading)) ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <div className={`text-center text-white ${m ? 'px-4' : 'px-6'} max-w-xl w-full`}>
-            <h1 className={m ? 'mb-8' : 'mb-10'}>
-              <div className={`tracking-[0.3em] text-white/50 ${m ? 'text-xs mb-1' : 'text-base mb-2'}`}>WEN WANG GUA</div>
-              <div className={`font-bold tracking-widest ${m ? 'text-3xl' : 'text-5xl'}`}>金 钱 卦</div>
-              <div className={`text-white/50 ${m ? 'text-sm mt-1' : 'text-base mt-2'}`}>Money Hexagram Divination</div>
-            </h1>
+          {/* 开屏内容 */}
+          {showSplash && (
+            <div
+              className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ${
+                splashFading ? 'opacity-0 blur-sm' : 'opacity-100 blur-0'
+              }`}
+            >
+              <div className={`text-center text-white ${m ? 'px-4' : 'px-6'} max-w-xl w-full`}>
+                <h1 className={m ? 'mb-8' : 'mb-10'}>
+                  <div className={`tracking-[0.3em] text-white/50 ${m ? 'text-xs mb-1' : 'text-base mb-2'}`}>WEN WANG GUA</div>
+                  <div className={`font-bold tracking-widest ${m ? 'text-3xl' : 'text-5xl'}`}>金 钱 卦</div>
+                  <div className={`text-white/50 ${m ? 'text-sm mt-1' : 'text-base mt-2'}`}>Money Hexagram Divination</div>
+                </h1>
 
-            {/* 箴言轮播区 — 较大空白 */}
-            <div className={`flex flex-col items-center justify-center ${m ? 'h-32 mb-4' : 'h-40 mb-6'}`}>
-              <div
-                key={sayingIndex}
-                className="animate-[fadeInUp_0.8s_ease-out]"
-              >
-                <div className={`text-white/70 font-medium tracking-[0.08em] leading-relaxed mb-2 ${m ? 'text-sm px-2' : 'text-lg px-4'}`}>
-                  "{MYSTICAL_SAYINGS[sayingIndex].cn}"
+                {/* 箴言轮播区 */}
+                <div className={`flex flex-col items-center justify-center ${m ? 'h-32 mb-4' : 'h-40 mb-6'}`}>
+                  <div
+                    key={sayingIndex}
+                    className="animate-[fadeInUp_0.8s_ease-out]"
+                  >
+                    <div className={`text-white/70 font-medium tracking-[0.08em] leading-relaxed mb-2 ${m ? 'text-sm px-2' : 'text-lg px-4'}`}>
+                      "{MYSTICAL_SAYINGS[sayingIndex].cn}"
+                    </div>
+                    <div className={`text-white/30 tracking-[0.05em] leading-relaxed italic ${m ? 'text-[10px] px-2' : 'text-xs px-6'}`}>
+                      "{MYSTICAL_SAYINGS[sayingIndex].en}"
+                    </div>
+                  </div>
                 </div>
-                <div className={`text-white/30 tracking-[0.05em] leading-relaxed italic ${m ? 'text-[10px] px-2' : 'text-xs px-6'}`}>
-                  "{MYSTICAL_SAYINGS[sayingIndex].en}"
+
+                <div className={`h-px bg-white/40 mx-auto ${m ? 'w-12 mb-6' : 'w-16 mb-8'}`} />
+                <div className={`flex items-center justify-center ${m ? 'flex-col gap-3' : 'flex-row gap-6'}`}>
+                  <button
+                    onClick={() => handleSplashBegin('en')}
+                    className={`w-44 bg-white/95 text-black hover:bg-white border-none font-semibold transition-all tracking-widest ${m ? 'py-3 text-base' : 'py-3.5 text-lg'}`}
+                  >
+                    E N G L I S H
+                  </button>
+                  <button
+                    onClick={() => handleSplashBegin('cn')}
+                    className={`w-44 bg-white/95 text-black hover:bg-white border-none font-semibold transition-all tracking-widest ${m ? 'py-3 text-base' : 'py-3.5 text-lg'}`}
+                  >
+                    中  文
+                  </button>
                 </div>
+                <button
+                  onClick={() => setShowInstruction(true)}
+                  className={`text-white/80 hover:text-white border border-white/50 hover:border-white py-2 font-medium transition-all tracking-wider bg-transparent ${m ? 'mt-5 px-5 text-xs' : 'mt-6 px-6 text-sm'}`}
+                >
+                  I N S T R U C T I O N  /  介  绍
+                </button>
+                <div className={`h-px bg-white/20 mx-auto ${m ? 'w-10 my-4' : 'w-12 my-5'}`} />
+                <button
+                  onClick={() => setShowDonate(true)}
+                  className={`text-amber-300/60 hover:text-amber-300 transition-all tracking-[0.15em] bg-transparent border-none ${m ? 'text-[10px]' : 'text-xs'}`}
+                >
+                  隨  喜  讚  賞
+                </button>
+                {!modelLoaded && (
+                  <div className={`text-white/40 animate-pulse ${m ? 'text-xs mt-3' : 'text-sm mt-4'}`}>
+                    Loading coin model…
+                  </div>
+                )}
               </div>
             </div>
+          )}
 
-            <div className={`h-px bg-white/40 mx-auto ${m ? 'w-12 mb-6' : 'w-16 mb-8'}`} />
-            <div className={`flex items-center justify-center ${m ? 'flex-col gap-3' : 'flex-row gap-6'}`}>
+          {/* 静心内容 */}
+          {showMeditation && (
+            <div className={`text-center text-white max-w-lg ${m ? 'px-4' : 'px-6'}`}>
+              <div className={`font-bold tracking-[0.3em] ${m ? 'text-lg mb-5' : 'text-xl mb-6'}`}>
+                {lang === 'cn' ? '静 心 凝 神' : 'C E N T E R  ·  Y O U R  ·  M I N D'}
+              </div>
+              <div className={`h-px bg-white/40 mx-auto ${m ? 'w-12 mb-5' : 'w-16 mb-6'}`} />
+              <p className={`leading-relaxed text-white/85 ${m ? 'text-base mb-3' : 'text-lg mb-4'}`}>
+                {lang === 'cn'
+                  ? '专注默念所问之事约一分钟，确保意念清晰。'
+                  : 'Focus silently on your question for about a minute. Let your intention be clear and unwavering.'}
+              </p>
+              <p className={`leading-relaxed text-white/50 ${m ? 'text-sm mb-6' : 'text-base mb-8'}`}>
+                {lang === 'cn'
+                  ? '心诚则灵，感而遂通。'
+                  : 'A sincere heart opens the way to insight.'}
+              </p>
               <button
-                onClick={() => handleSplashBegin('en')}
-                className={`w-44 bg-white/95 text-black hover:bg-white border-none font-semibold transition-all tracking-widest ${m ? 'py-3 text-base' : 'py-3.5 text-lg'}`}
+                onClick={handleMeditationStart}
+                className={`bg-white/95 text-black hover:bg-white border-none font-semibold transition-all tracking-[0.3em] ${m ? 'px-10 py-3 text-base' : 'px-14 py-3.5 text-lg'}`}
               >
-                E N G L I S H
-              </button>
-              <button
-                onClick={() => handleSplashBegin('cn')}
-                className={`w-44 bg-white/95 text-black hover:bg-white border-none font-semibold transition-all tracking-widest ${m ? 'py-3 text-base' : 'py-3.5 text-lg'}`}
-              >
-                中  文
+                {lang === 'cn' ? '问  卜' : 'C O N S U L T'}
               </button>
             </div>
-            <button
-              onClick={() => setShowInstruction(true)}
-              className={`text-white/80 hover:text-white border border-white/50 hover:border-white py-2 font-medium transition-all tracking-wider bg-transparent ${m ? 'mt-5 px-5 text-xs' : 'mt-6 px-6 text-sm'}`}
-            >
-              I N S T R U C T I O N  /  介  绍
-            </button>
-            <div className={`h-px bg-white/20 mx-auto ${m ? 'w-10 my-4' : 'w-12 my-5'}`} />
-            <button
-              onClick={() => setShowDonate(true)}
-              className={`text-amber-300/60 hover:text-amber-300 transition-all tracking-[0.15em] bg-transparent border-none ${m ? 'text-[10px]' : 'text-xs'}`}
-            >
-              隨  喜  讚  賞
-            </button>
-            {!modelLoaded && (
-              <div className={`text-white/40 animate-pulse ${m ? 'text-xs mt-3' : 'text-sm mt-4'}`}>
-                Loading coin model…
-              </div>
-            )}
-          </div>
+          )}
         </div>
       )}
 
@@ -487,35 +525,6 @@ function App() {
         </div>
       )}
 
-      {/* 静心页 — 水墨淡开 */}
-      {showMeditation && (
-        <div
-          className="absolute inset-0 z-40 flex items-center justify-center bg-black/75 transition-all duration-1000"
-        >
-          <div className={`text-center text-white max-w-lg ${m ? 'px-4' : 'px-6'}`}>
-            <div className={`font-bold tracking-[0.3em] ${m ? 'text-lg mb-5' : 'text-xl mb-6'}`}>
-              {lang === 'cn' ? '静 心 凝 神' : 'C E N T E R  ·  Y O U R  ·  M I N D'}
-            </div>
-            <div className={`h-px bg-white/40 mx-auto ${m ? 'w-12 mb-5' : 'w-16 mb-6'}`} />
-            <p className={`leading-relaxed text-white/85 ${m ? 'text-base mb-3' : 'text-lg mb-4'}`}>
-              {lang === 'cn'
-                ? '专注默念所问之事约一分钟，确保意念清晰。'
-                : 'Focus silently on your question for about a minute. Let your intention be clear and unwavering.'}
-            </p>
-            <p className={`leading-relaxed text-white/50 ${m ? 'text-sm mb-6' : 'text-base mb-8'}`}>
-              {lang === 'cn'
-                ? '心诚则灵，感而遂通。'
-                : 'A sincere heart opens the way to insight.'}
-            </p>
-            <button
-              onClick={handleMeditationStart}
-              className={`bg-white/95 text-black hover:bg-white border-none font-semibold transition-all tracking-[0.3em] ${m ? 'px-10 py-3 text-base' : 'px-14 py-3.5 text-lg'}`}
-            >
-              {lang === 'cn' ? '问  卜' : 'C O N S U L T'}
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* 3D 场景 — 桌面左移，移动端抽屉打开时整体下沉 */}
       <div
