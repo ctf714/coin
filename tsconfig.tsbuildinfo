@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/components/Coin.tsx","./src/components/CoinThrower.tsx","./src/components/GuaName.tsx","./src/components/TrigramRecord.tsx","./src/utils/guaData.ts"],"errors":true,"version":"5.9.3"}
