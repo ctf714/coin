@@ -36,7 +36,7 @@ export const sixtyFourGua: Record<string, GuaData> = {
   '100000': { name: '山地剥', code: '剥' },
   '000001': { name: '地雷复', code: '复' },
   '100111': { name: '山天大畜', code: '大畜' },
-  '111001': { name: '天泽履', code: '履' },
+  '111001': { name: '天雷无妄', code: '无妄' },
   '001001': { name: '山雷颐', code: '颐' },
   '110110': { name: '泽风大过', code: '大过' },
   '010010': { name: '坎为水', code: '坎' },
@@ -66,13 +66,13 @@ export const sixtyFourGua: Record<string, GuaData> = {
   '110100': { name: '风山渐', code: '渐' },
   '001011': { name: '雷泽归妹', code: '归妹' },
   '101100': { name: '火山旅', code: '旅' },
-  '011011': { name: '兑为泽', code: '兑' },
   '110010': { name: '风水涣', code: '涣' },
   '010011': { name: '水泽节', code: '节' },
   '110011': { name: '风泽中孚', code: '中孚' },
   '001100': { name: '雷山小过', code: '小过' },
   '010101': { name: '水火既济', code: '既济' },
   '101010': { name: '火水未济', code: '未济' },
+  '011011': { name: '兑为泽', code: '兑' },
 };
 
 export const getGuaName = (trigrams: Trigram[]): string => {
