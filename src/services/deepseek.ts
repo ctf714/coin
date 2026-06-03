@@ -82,9 +82,9 @@ export function getQuotaInfo(): { remaining: number; max: number } {
 
 function buildSystemPrompt(lang: 'cn' | 'en'): string {
   const langInstruction = lang === 'cn'
-    ? `## ⚠️ PRIMARY OUTPUT LANGUAGE: CHINESE (中文)
+    ? `## PRIMARY OUTPUT LANGUAGE: CHINESE (中文)
 The user selected Chinese. ALL analysisCn, adviceCn, summaryCn, questionAnalysisCn, etc. MUST be the PRIMARY, best-quality content — written in natural, fluent, culturally rich Chinese as by a native I Ching scholar. English fields are secondary translations. DO NOT write Chinese by translating from English; think and compose directly in Chinese.`
-    : `## ⚠️ PRIMARY OUTPUT LANGUAGE: ENGLISH
+    : `## PRIMARY OUTPUT LANGUAGE: ENGLISH
 The user selected English. ALL analysisEn, adviceEn, summaryEn, questionAnalysisEn, etc. MUST be the PRIMARY, best-quality content — written in natural, fluent, eloquent English as by a native philosopher. Chinese fields are secondary. DO NOT write English by translating from Chinese; think and compose directly in English.`;
 
   return `You are a master of I Ching (易经) divination interpretation, deeply versed in both traditional Chinese philosophy and modern psychological insight. Your task is to analyze a hexagram (卦象) in relation to a user's personal question (问卜).

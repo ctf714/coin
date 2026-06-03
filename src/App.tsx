@@ -780,7 +780,7 @@ function App() {
                 {/* 本卦分析 */}
                 <div>
                   <h4 className={`text-black font-bold ${m ? 'text-xs mb-1' : 'text-sm mb-1.5'}`}>
-                    {lang === 'cn' ? '📖 本卦解读' : '📖 Original Hexagram'}
+                    {lang === 'cn' ? '本卦解读' : 'Original Hexagram'}
                   </h4>
                   <p className={`text-black/80 leading-relaxed ${m ? 'text-xs' : 'text-sm'}`}>
                     {lang === 'cn'
@@ -793,7 +793,7 @@ function App() {
                 {aiResult.changedHexagram && (
                   <div>
                     <h4 className={`text-black font-bold ${m ? 'text-xs mb-1' : 'text-sm mb-1.5'}`}>
-                      {lang === 'cn' ? '🔄 变卦之意' : '🔄 Changed Hexagram'}
+                      {lang === 'cn' ? '变卦之意' : 'Changed Hexagram'}
                     </h4>
                     <p className={`text-black/80 leading-relaxed ${m ? 'text-xs' : 'text-sm'}`}>
                       {lang === 'cn'
@@ -807,7 +807,7 @@ function App() {
                 {aiResult.changingLinesAnalysis.filter(l => l.isChanging).length > 0 && (
                   <div>
                     <h4 className={`text-black font-bold ${m ? 'text-xs mb-1' : 'text-sm mb-1.5'}`}>
-                      {lang === 'cn' ? '⚡ 变爻详解' : '⚡ Changing Lines'}
+                      {lang === 'cn' ? '变爻详解' : 'Changing Lines'}
                     </h4>
                     <div className="space-y-2">
                       {aiResult.changingLinesAnalysis.filter(l => l.isChanging).map((line) => (
@@ -838,7 +838,7 @@ function App() {
                 {/* 问卜事件分析 */}
                 <div>
                   <h4 className={`text-black font-bold ${m ? 'text-xs mb-1' : 'text-sm mb-1.5'}`}>
-                    {lang === 'cn' ? '💭 事件解读' : '💭 Question Analysis'}
+                    {lang === 'cn' ? '事件解读' : 'Question Analysis'}
                   </h4>
                   <p className={`text-black/80 leading-relaxed ${m ? 'text-xs' : 'text-sm'}`}>
                     {lang === 'cn' ? aiResult.questionAnalysisCn : aiResult.questionAnalysisEn}
@@ -848,7 +848,7 @@ function App() {
                 {/* 建议 */}
                 <div className="bg-amber-50/80 border border-amber-300 px-3 py-3">
                   <h4 className={`text-black font-bold ${m ? 'text-xs mb-1' : 'text-sm mb-1.5'}`}>
-                    {lang === 'cn' ? '✨ 建议' : '✨ Advice'}
+                    {lang === 'cn' ? '建议' : 'Advice'}
                   </h4>
                   <p className={`text-black/80 leading-relaxed ${m ? 'text-xs' : 'text-sm'}`}>
                     {lang === 'cn' ? aiResult.adviceCn : aiResult.adviceEn}
@@ -858,7 +858,7 @@ function App() {
                 {!aiResult.success && aiResult.rateLimited && (
                   <div className="bg-red-50/80 border border-red-300 px-3 py-3 text-center">
                     <p className={`text-red-700 font-bold ${m ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>
-                      {lang === 'cn' ? '⏳ 请求次数已达上限' : '⏳ Rate Limit Reached'}
+                      {lang === 'cn' ? '请求次数已达上限' : 'Rate Limit Reached'}
                     </p>
                     <p className={`text-red-600/80 leading-relaxed ${m ? 'text-[10px]' : 'text-xs'}`}>
                       {aiResult.retryAfterSeconds && aiResult.retryAfterSeconds > 3600
