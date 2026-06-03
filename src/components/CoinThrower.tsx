@@ -146,7 +146,7 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
   const modelScene = gltf?.scene ?? null;
 
   // 移动端缩小铜钱间距、拉远镜头
-  const coinSpacing = isMobile ? 0 : 1.5;
+  const coinSpacing = isMobile ? 0.4 : 1.5;
   // 手机端镜头拉近，确保大铜钱在屏幕内
   const camPos: [number, number, number] = isMobile ? [0, 3.5, 2.8] : [0, 4, 3.5];
   const camFov = isMobile ? 45 : 45;
@@ -158,11 +158,19 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
     }
   }, [modelScene, onModelLoaded]);
 
-  const [coins, setCoins] = useState<CoinData[]>(() => [
-    { id: 1, basePos: [-coinSpacing, 0.1, 0], targetPos: [-coinSpacing, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
+  const makeCoins = (spacing: number): CoinData[] => [
+    { id: 1, basePos: [-spacing, 0.1, 0], targetPos: [-spacing, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
     { id: 2, basePos: [0, 0.1, 0], targetPos: [0, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
-    { id: 3, basePos: [coinSpacing, 0.1, 0], targetPos: [coinSpacing, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
-  ]);
+    { id: 3, basePos: [spacing, 0.1, 0], targetPos: [spacing, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
+  ];
+
+  const [coins, setCoins] = useState<CoinData[]>(() => makeCoins(coinSpacing));
+
+  // 修复: useDeviceDetect 首次渲染 isMobile=false, useEffect 后才变 true —
+  // useState 初始化器只用第一次的值, 须在 coinSpacing 变化时同步位置
+  useEffect(() => {
+    setCoins(makeCoins(coinSpacing));
+  }, [coinSpacing]);
 
   const [phase, setPhase] = useState<'idle' | 'shaking' | 'done'>('idle');
   const [progress, setProgress] = useState(0);
