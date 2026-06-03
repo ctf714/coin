@@ -1,22 +1,50 @@
-import { useState, useEffect, useRef } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { GLTFLoader, GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+// 预加载 Draco 解码器（全局单例）
+let dracoLoader: DRACOLoader | null = null;
+const getDracoLoader = () => {
+  if (!dracoLoader) {
+    dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+  }
+  return dracoLoader;
+};
+
+// 全局预加载模型（所有实例共享同一个 GLTF）
+let cachedGLTF: GLTF | null = null;
+
+const MODEL_URL = `${import.meta.env.BASE_URL}models/model-final.glb`;
+
+const useSharedGLTF = () => {
+  const [gltf, setGltf] = useState<GLTF | null>(cachedGLTF);
+  useEffect(() => {
+    if (cachedGLTF) return;
+    const loader = new GLTFLoader();
+    loader.setDRACOLoader(getDracoLoader());
+    loader.load(MODEL_URL, (result) => {
+      cachedGLTF = result;
+      setGltf(result);
+    });
+  }, []);
+  return gltf;
+};
 
 interface CoinData {
   id: number;
   basePos: [number, number, number];
   targetPos: [number, number, number];
   rotationSpeed: number;
-  modelPath: string;
-  isHeads: boolean; // true正面，false反面
-  totalSpin: number; // 总共要旋转多少角度
+  isHeads: boolean;
+  totalSpin: number;
 }
 
 interface CoinThrowerProps {
-  onThrowComplete: (results: boolean[]) => void; // 三个铜钱的正反面，true正面
+  onThrowComplete: (results: boolean[]) => void;
   isThrowing: boolean;
   coinRotationX: number;
   coinRotationY: number;
@@ -27,25 +55,17 @@ interface CoinThrowerProps {
 // 单个铜钱组件
 const Coin: React.FC<{
   position: [number, number, number];
-  rotationSpeed: number;
   rotationX: number;
   rotationY: number;
   rotationZ: number;
-  modelPath: string;
   isHeads: boolean;
-  progress: number; // 0-1，动画进度
+  progress: number;
   totalSpin: number;
-}> = ({ position, rotationSpeed: _rotationSpeed, rotationX, rotationY, rotationZ, modelPath, isHeads, progress, totalSpin }) => {
-  const mtlPath = `${import.meta.env.BASE_URL}models/${modelPath}/model.mtl`;
-  const objPath = `${import.meta.env.BASE_URL}models/${modelPath}/model.obj`;
-  
-  const materials = useLoader(MTLLoader, mtlPath);
-  const obj = useLoader(OBJLoader, objPath, (loader) => {
-    materials.preload();
-    loader.setMaterials(materials);
-  });
-
+  model: THREE.Group;
+}> = ({ position, rotationX, rotationY, rotationZ, isHeads, progress, totalSpin, model }) => {
   const groupRef = useRef<THREE.Group>(null);
+  // 每个实例使用 clone 避免共享变换
+  const clonedModel = useMemo(() => model.clone(true), [model]);
 
   useFrame(() => {
     if (groupRef.current) {
@@ -53,33 +73,19 @@ const Coin: React.FC<{
     }
   });
 
-  // 计算当前旋转角度：空中转，落地后再转一圈
-  let spinProgress = 0;
-  if (progress < 0.85) {
-    // 前85%的时间完成全部旋转（包括落地后转一圈）
-    spinProgress = progress / 0.85;
-  } else {
-    // 最后15%保持不动
-    spinProgress = 1;
-  }
+  // 计算当前旋转角度
+  const spinProgress = progress < 0.85 ? progress / 0.85 : 1;
   const currentSpin = spinProgress * totalSpin;
 
-  // 计算最终角度：正面用原值，反面旋转180度（π弧度）
-  let finalRotX = rotationX;
-  let finalRotY = rotationY;
-  let finalRotZ = rotationZ;
-  
-  if (!isHeads) {
-    // 反面：Y轴旋转180度让它翻过来
-    finalRotY = rotationY + Math.PI;
-  }
+  // 反面 Y 轴翻转 180 度
+  const finalRotY = isHeads ? rotationY : rotationY + Math.PI;
 
   return (
     <group ref={groupRef} scale={[0.42, 0.42, 0.42]}>
       <primitive
-        object={obj}
+        object={clonedModel}
         scale={[3, 3, 3]}
-        rotation={[finalRotX, finalRotY + currentSpin, finalRotZ]}
+        rotation={[rotationX, finalRotY + currentSpin, rotationZ]}
       />
     </group>
   );
@@ -94,6 +100,28 @@ const Scene: React.FC<{
   progress: number;
   controlsRef: React.MutableRefObject<any>;
 }> = ({ coins, coinRotationX, coinRotationY, coinRotationZ, progress, controlsRef }) => {
+  const gltf = useSharedGLTF();
+
+  // 获取模型根节点
+  const modelScene = gltf?.scene;
+
+  if (!modelScene) {
+    // 加载中显示占位
+    return (
+      <>
+        <ambientLight intensity={0.8} />
+        <directionalLight position={[5, 8, 5]} castShadow intensity={1.5} shadow-mapSize={[1024, 1024]} />
+        <pointLight position={[-3, 5, -3]} intensity={0.6} color="#ffd700" />
+        <mesh position={[0, 0.5, 0]}>
+          <cylinderGeometry args={[0.8, 0.8, 0.15, 32]} />
+          <meshStandardMaterial color="#d4a745" metalness={0.6} roughness={0.4} />
+        </mesh>
+        <ContactShadows position={[0, 0.01, 0]} opacity={0.4} scale={10} blur={2} far={2} color="#000000" />
+        <OrbitControls ref={controlsRef} enableZoom={true} enablePan={true} enableRotate={true} />
+      </>
+    );
+  }
+
   return (
     <>
       <ambientLight intensity={0.8} />
@@ -104,14 +132,13 @@ const Scene: React.FC<{
         <Coin
           key={coin.id}
           position={coin.targetPos}
-          rotationSpeed={coin.rotationSpeed}
           rotationX={coinRotationX}
           rotationY={coinRotationY}
           rotationZ={coinRotationZ}
-          modelPath={coin.modelPath}
           isHeads={coin.isHeads}
           progress={progress}
           totalSpin={coin.totalSpin}
+          model={modelScene}
         />
       ))}
 
@@ -130,22 +157,20 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
   resetViewSignal
 }) => {
   const [coins, setCoins] = useState<CoinData[]>([
-    { id: 1, basePos: [-1.5, 0.1, 0], targetPos: [-1.5, 0.1, 0], rotationSpeed: 0, modelPath: 'model1', isHeads: true, totalSpin: 0 },
-    { id: 2, basePos: [0, 0.1, 0], targetPos: [0, 0.1, 0], rotationSpeed: 0, modelPath: 'model2', isHeads: true, totalSpin: 0 },
-    { id: 3, basePos: [1.5, 0.1, 0], targetPos: [1.5, 0.1, 0], rotationSpeed: 0, modelPath: 'model3', isHeads: true, totalSpin: 0 },
+    { id: 1, basePos: [-1.5, 0.1, 0], targetPos: [-1.5, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
+    { id: 2, basePos: [0, 0.1, 0], targetPos: [0, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
+    { id: 3, basePos: [1.5, 0.1, 0], targetPos: [1.5, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
   ]);
 
   const [phase, setPhase] = useState<'idle' | 'shaking' | 'done'>('idle');
-  const [progress, setProgress] = useState(0); // 0-1 动画进度
+  const [progress, setProgress] = useState(0);
   const controlsRef = useRef<any>(null);
   const animationFrameRef = useRef<number | null>(null);
   const defaultCameraPosition = useRef<[number, number, number]>([0, 4, 3.5]);
   const defaultTarget = useRef<[number, number, number]>([0, 0, 0]);
 
   const animateResetView = () => {
-    if (!controlsRef.current) {
-      return;
-    }
+    if (!controlsRef.current) return;
 
     if (animationFrameRef.current !== null) {
       cancelAnimationFrame(animationFrameRef.current);
@@ -199,77 +224,50 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
     if (isThrowing && phase === 'idle') {
       setPhase('shaking');
       setProgress(0);
-      
-      // 抛起前就随机决定每个铜钱的正反面和旋转次数
+
       const newCoins = coins.map(coin => {
-        // 每个铜钱独立随机：0或1
         const randomValue = Math.floor(Math.random() * 2);
         const isHeads = randomValue === 1;
-        
-        // 空中转2-3圈，落地后再转1圈，总共3-4圈
         const airSpinCount = 2 + Math.floor(Math.random() * 2);
-        const totalSpin = (airSpinCount + 1) * Math.PI * 2; // +1是落地后转的一圈
-        
-        return {
-          ...coin,
-          isHeads,
-          totalSpin
-        };
+        const totalSpin = (airSpinCount + 1) * Math.PI * 2;
+        return { ...coin, isHeads, totalSpin };
       });
       setCoins(newCoins);
-      
-      // 抛起向量：X: -0.7854, Y: 1.4312, Z: 0.9250
+
       const throwVec = new THREE.Vector3(-0.7854, 1.4312, 0.9250).normalize();
-      
-      const totalDuration = 1600; // 总动画时长
+      const totalDuration = 1600;
       const startTime = Date.now();
 
       const animate = () => {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / totalDuration, 1);
         setProgress(progress);
-        
+
         if (elapsed < totalDuration) {
           setCoins(prev => prev.map((coin, idx) => {
             let throwDistance = 0;
             let xOffset = 0;
 
-            // 简单的一次抛起：0-0.625 动画，之后不动
             if (progress < 0.625) {
-              // 归一化到 0-1
               const t = progress / 0.625;
-              // 使用 sin 曲线模拟抛起落下：0 -> 最高点 -> 0
               throwDistance = Math.sin(t * Math.PI) * 2;
-              
-              // 左右摇晃
               if (t < 0.5) {
-                // 上抛阶段摇晃大一点
                 xOffset = Math.sin(elapsed * 0.015 + idx * 2) * 0.5 * (1 - t);
               } else {
-                // 下落阶段摇晃小一点
                 xOffset = Math.sin(elapsed * 0.008 + idx) * 0.3 * (1 - t);
               }
-            } else {
-              // 落地后不动
-              throwDistance = 0;
-              xOffset = 0;
             }
 
-            // 计算沿着抛起向量的位置
             const finalX = coin.basePos[0] + xOffset + throwVec.x * throwDistance;
             const finalY = 0.1 + throwVec.y * throwDistance;
             const finalZ = throwVec.z * throwDistance;
 
-            return {
-              ...coin,
-              targetPos: [finalX, finalY, finalZ]
-            };
+            return { ...coin, targetPos: [finalX, finalY, finalZ] };
           }));
 
           requestAnimationFrame(animate);
         } else {
           setPhase('done');
-          // 传递三个铜钱的正反面结果
           onThrowComplete(newCoins.map(c => c.isHeads));
         }
       };
