@@ -106,20 +106,7 @@ const Scene: React.FC<{
   const modelScene = gltf?.scene;
 
   if (!modelScene) {
-    // 加载中显示占位
-    return (
-      <>
-        <ambientLight intensity={0.8} />
-        <directionalLight position={[5, 8, 5]} castShadow intensity={1.5} shadow-mapSize={[1024, 1024]} />
-        <pointLight position={[-3, 5, -3]} intensity={0.6} color="#ffd700" />
-        <mesh position={[0, 0.5, 0]}>
-          <cylinderGeometry args={[0.8, 0.8, 0.15, 32]} />
-          <meshStandardMaterial color="#d4a745" metalness={0.6} roughness={0.4} />
-        </mesh>
-        <ContactShadows position={[0, 0.01, 0]} opacity={0.4} scale={10} blur={2} far={2} color="#000000" />
-        <OrbitControls ref={controlsRef} enableZoom={true} enablePan={true} enableRotate={true} />
-      </>
-    );
+    return null;
   }
 
   return (
