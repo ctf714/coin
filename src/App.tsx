@@ -6,6 +6,7 @@ function App() {
   const [trigrams, setTrigrams] = useState<Trigram[]>([]);
   const [isThrowing, setIsThrowing] = useState(false);
   const [canThrow, setCanThrow] = useState(true);
+  const [resetViewSignal, setResetViewSignal] = useState(0);
   
   // 铜钱角度状态
   const coinRotationX = -0.7854;
@@ -37,6 +38,8 @@ function App() {
   const handleReset = () => {
     setTrigrams([]);
     setCanThrow(true);
+    setIsThrowing(false);
+    setResetViewSignal(prev => prev + 1);
   };
 
   return (
@@ -55,6 +58,7 @@ function App() {
           coinRotationX={coinRotationX}
           coinRotationY={coinRotationY}
           coinRotationZ={coinRotationZ}
+          resetViewSignal={resetViewSignal}
         />
       </div>
 
@@ -91,7 +95,7 @@ function App() {
                 {/* 变爻标记放在左边 */}
                 <div className="absolute left-2 w-6 h-6 flex items-center justify-center z-10">
                   {trigram?.changing && (
-                    <span className="text-black font-bold text-xl">
+                    <span className="text-black font-bold text-sm leading-none">
                       {trigram.yinYang === 'yang' ? '○' : '×'}
                     </span>
                   )}

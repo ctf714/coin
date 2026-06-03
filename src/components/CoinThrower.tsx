@@ -21,6 +21,7 @@ interface CoinThrowerProps {
   coinRotationX: number;
   coinRotationY: number;
   coinRotationZ: number;
+  resetViewSignal: number;
 }
 
 // 单个铜钱组件
@@ -124,7 +125,8 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
   isThrowing,
   coinRotationX,
   coinRotationY,
-  coinRotationZ
+  coinRotationZ,
+  resetViewSignal
 }) => {
   const [coins, setCoins] = useState<CoinData[]>([
     { id: 1, basePos: [-1.5, 0.1, 0], targetPos: [-1.5, 0.1, 0], rotationSpeed: 0, modelPath: 'model1', isHeads: true, totalSpin: 0 },
@@ -134,12 +136,63 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
 
   const [phase, setPhase] = useState<'idle' | 'shaking' | 'done'>('idle');
   const [progress, setProgress] = useState(0); // 0-1 动画进度
+  const controlsRef = useRef<any>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const defaultCameraPosition = useRef<[number, number, number]>([0, 4, 3.5]);
+  const defaultTarget = useRef<[number, number, number]>([0, 0, 0]);
+
+  const animateResetView = () => {
+    if (!controlsRef.current) {
+      return;
+    }
+
+    if (animationFrameRef.current !== null) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+
+    const camera = controlsRef.current.object as THREE.PerspectiveCamera;
+    const startCameraPosition = camera.position.clone();
+    const startTarget = controlsRef.current.target.clone();
+    const endCameraPosition = new THREE.Vector3(...defaultCameraPosition.current);
+    const endTarget = new THREE.Vector3(...defaultTarget.current);
+    const duration = 600;
+    const startTime = performance.now();
+
+    const step = (now: number) => {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+
+      camera.position.lerpVectors(startCameraPosition, endCameraPosition, eased);
+      controlsRef.current.target.lerpVectors(startTarget, endTarget, eased);
+      controlsRef.current.update();
+
+      if (t < 1) {
+        animationFrameRef.current = requestAnimationFrame(step);
+      }
+    };
+
+    animationFrameRef.current = requestAnimationFrame(step);
+  };
 
   useEffect(() => {
     if (!isThrowing && phase === 'done') {
       setPhase('idle');
     }
   }, [isThrowing, phase]);
+
+  useEffect(() => {
+    animateResetView();
+  }, [resetViewSignal]);
+
+  useEffect(() => {
+    return () => {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (isThrowing && phase === 'idle') {
@@ -233,6 +286,7 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
           coinRotationY={coinRotationY}
           coinRotationZ={coinRotationZ}
           progress={progress}
+          controlsRef={controlsRef}
         />
       </Canvas>
     </div>
