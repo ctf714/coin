@@ -60,8 +60,8 @@ const Coin: React.FC<{
 }> = ({ position, rotationX, rotationY, rotationZ, isHeads, progress, totalSpin, model, isMobile }) => {
   const groupRef = useRef<THREE.Group>(null);
   const clonedModel = useMemo(() => model.clone(true), [model]);
-  const s = isMobile ? [0.3, 0.3, 0.3] : [0.42, 0.42, 0.42];
-  const modelScale = isMobile ? [2.2, 2.2, 2.2] : [3, 3, 3];
+  const s = isMobile ? [0.25, 0.25, 0.25] : [0.42, 0.42, 0.42];
+  const modelScale = isMobile ? [1.8, 1.8, 1.8] : [3, 3, 3];
 
   useFrame(() => {
     if (groupRef.current) {
@@ -141,7 +141,7 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
   const modelScene = gltf?.scene ?? null;
 
   // 移动端缩小铜钱间距、拉远镜头
-  const coinSpacing = isMobile ? 0.35 : 1.5;
+  const coinSpacing = isMobile ? 0.18 : 1.5;
   const camPos: [number, number, number] = isMobile ? [0, 5, 5] : [0, 4, 3.5];
   const camFov = isMobile ? 42 : 45;
 
