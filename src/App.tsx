@@ -8,6 +8,7 @@ function App() {
   const [canThrow, setCanThrow] = useState(true);
   const [resetViewSignal, setResetViewSignal] = useState(0);
   const [lang, setLang] = useState<'cn' | 'en'>('en');
+  const [modelLoaded, setModelLoaded] = useState(false);
   
   // 铜钱角度状态
   const coinRotationX = -0.7854;
@@ -60,6 +61,7 @@ function App() {
           coinRotationY={coinRotationY}
           coinRotationZ={coinRotationZ}
           resetViewSignal={resetViewSignal}
+          onModelLoaded={() => setModelLoaded(true)}
         />
       </div>
 
@@ -74,10 +76,10 @@ function App() {
         </button>
         <button
           onClick={handleStartThrow}
-          disabled={!canThrow || isThrowing || trigrams.length >= 6}
+          disabled={!modelLoaded || !canThrow || isThrowing || trigrams.length >= 6}
           className="px-10 py-4 bg-white/90 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed text-black border-2 border-black font-bold text-xl transition-all"
         >
-          {isThrowing ? 'Casting...' : trigrams.length >= 6 ? 'Done' : 'Cast'}
+          {!modelLoaded ? 'Loading...' : isThrowing ? 'Casting...' : trigrams.length >= 6 ? 'Done' : 'Cast'}
         </button>
       </div>
 

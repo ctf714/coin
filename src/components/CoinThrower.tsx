@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
 import { GLTFLoader, GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 // 全局预加载模型（所有实例共享同一个 GLTF）
 let cachedGLTF: GLTF | null = null;
@@ -14,6 +15,9 @@ const useSharedGLTF = () => {
   useEffect(() => {
     if (cachedGLTF) return;
     const loader = new GLTFLoader();
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath(`${import.meta.env.BASE_URL}draco/`);
+    loader.setDRACOLoader(dracoLoader);
     loader.load(MODEL_URL, (result) => {
       cachedGLTF = result;
       setGltf(result);
@@ -38,6 +42,7 @@ interface CoinThrowerProps {
   coinRotationY: number;
   coinRotationZ: number;
   resetViewSignal: number;
+  onModelLoaded?: () => void;
 }
 
 // 单个铜钱组件
@@ -87,11 +92,8 @@ const Scene: React.FC<{
   coinRotationZ: number;
   progress: number;
   controlsRef: React.MutableRefObject<any>;
-}> = ({ coins, coinRotationX, coinRotationY, coinRotationZ, progress, controlsRef }) => {
-  const gltf = useSharedGLTF();
-
-  // 获取模型根节点
-  const modelScene = gltf?.scene;
+  modelScene: THREE.Group | null;
+}> = ({ coins, coinRotationX, coinRotationY, coinRotationZ, progress, controlsRef, modelScene }) => {
 
   if (!modelScene) {
     return null;
@@ -129,8 +131,19 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
   coinRotationX,
   coinRotationY,
   coinRotationZ,
-  resetViewSignal
+  resetViewSignal,
+  onModelLoaded,
 }) => {
+  const gltf = useSharedGLTF();
+  const modelScene = gltf?.scene ?? null;
+
+  // 模型加载完成通知父组件
+  useEffect(() => {
+    if (modelScene && onModelLoaded) {
+      onModelLoaded();
+    }
+  }, [modelScene, onModelLoaded]);
+
   const [coins, setCoins] = useState<CoinData[]>([
     { id: 1, basePos: [-1.5, 0.1, 0], targetPos: [-1.5, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
     { id: 2, basePos: [0, 0.1, 0], targetPos: [0, 0.1, 0], rotationSpeed: 0, isHeads: true, totalSpin: 0 },
@@ -261,6 +274,7 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
           coinRotationZ={coinRotationZ}
           progress={progress}
           controlsRef={controlsRef}
+          modelScene={modelScene}
         />
       </Canvas>
     </div>
