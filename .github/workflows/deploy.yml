@@ -32,7 +32,7 @@ jobs:
 
       - name: Check API Key
         run: |
-          if [ -z "${{ secrets.DEEPSEEK_API_KEY }}" ]; then
+          if [ -z "${DEEPSEEK_API_KEY}" ]; then
             echo "::warning::DEEPSEEK_API_KEY is empty or not set! AI analysis will fallback to local."
           else
             echo "DEEPSEEK_API_KEY is configured (length: ${#DEEPSEEK_API_KEY})."
