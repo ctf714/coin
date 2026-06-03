@@ -22,11 +22,11 @@ const CoinModel: React.FC<{
   rotationZ: number;
 }> = ({ scale, rotationX, rotationY, rotationZ }) => {
   // 加载材质
-  const materials = useLoader(MTLLoader, '/models/model.mtl');
+  const materials = useLoader(MTLLoader, `${import.meta.env.BASE_URL}models/model.mtl`);
   materials.preload();
   
   // 加载模型
-  const obj = useLoader(OBJLoader, '/models/model.obj', (loader) => {
+  const obj = useLoader(OBJLoader, `${import.meta.env.BASE_URL}models/model.obj`, (loader) => {
     loader.setMaterials(materials);
   });
 
