@@ -314,6 +314,10 @@ function App() {
     analyzeDivination(question, trigrams, lang).then((result) => {
       setAiResult(result);
       setIsAnalyzing(false);
+      if (result.rateLimited && result.retryAfterSeconds && result.retryAfterSeconds > 3600) {
+        // 日配额耗尽 → 弹出赞赏
+        setTimeout(() => setShowDonate(true), 1500);
+      }
     });
   }, [done, aiResult, isAnalyzing, question, trigrams, lang]);
 
@@ -325,6 +329,8 @@ function App() {
     setResetViewSignal(prev => prev + 1);
     setAiResult(null);
     setIsAnalyzing(false);
+    setQuestion('');
+    setShowMeditation(true);
   };
 
   // 抽屉拖拽调整大小
@@ -856,22 +862,20 @@ function App() {
                 </div>
 
                 {!aiResult.success && aiResult.rateLimited && (
-                  <div className="bg-red-50/80 border border-red-300 px-3 py-3 text-center">
-                    <p className={`text-red-700 font-bold ${m ? 'text-xs mb-0.5' : 'text-sm mb-1'}`}>
-                      {lang === 'cn' ? '请求次数已达上限' : 'Rate Limit Reached'}
+                  <div className="bg-red-950/90 border border-red-800/50 px-4 py-5 text-center">
+                    <p className={`text-red-400/80 tracking-[0.2em] font-serif ${m ? 'text-xs mb-1.5' : 'text-sm mb-2'}`}>
+                      {lang === 'cn' ? '天 机 不 可 尽 泄' : 'HEAVEN\'S SECRETS VEILED'}
                     </p>
-                    <p className={`text-red-600/80 leading-relaxed ${m ? 'text-[10px]' : 'text-xs'}`}>
-                      {aiResult.retryAfterSeconds && aiResult.retryAfterSeconds > 3600
-                        ? (lang === 'cn'
-                          ? `今日分析次数已用完，请于明日再试。以上为本地基础解读。`
-                          : `Daily analysis quota exhausted. Please try again tomorrow. Above is local interpretation.`)
-                        : aiResult.retryAfterSeconds
-                        ? (lang === 'cn'
-                          ? `请等待 ${aiResult.retryAfterSeconds} 秒后再试。以上为本地基础解读。`
-                          : `Please wait ${aiResult.retryAfterSeconds}s before retrying. Above is local interpretation.`)
-                        : (lang === 'cn'
-                          ? '暂时无法获取 AI 解读，以上为本地基础解读。'
-                          : 'AI analysis temporarily unavailable. Above is local interpretation.')}
+                    <div className="w-8 h-px bg-red-600/30 mx-auto mb-2" />
+                    <p className={`text-red-300/70 leading-relaxed font-serif ${m ? 'text-[11px]' : 'text-sm'}`}>
+                      {lang === 'cn'
+                        ? '卜问有度，不可贪求。今日三卦已满，天道冥冥，强窥则伤身损命。感天和而止，随喜以应。'
+                        : 'Divination must be measured. Three readings today are complete — the Dao is obscure, and forcing further insight harms body and fate. Rest in harmony, offer gratitude in return.'}
+                    </p>
+                    <p className={`text-amber-400/50 mt-3 tracking-widest ${m ? 'text-[9px]' : 'text-[10px]'}`}>
+                      {lang === 'cn'
+                        ? '— 以上为本地基础解读。赞赏随喜，以感天恩 —'
+                        : '— Local interpretation above. Donate to honor Heaven\'s grace —'}
                     </p>
                   </div>
                 )}

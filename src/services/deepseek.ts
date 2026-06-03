@@ -6,7 +6,7 @@ const DEEPSEEK_MODEL = 'deepseek-chat';
 
 // ====== 限流配置 ======
 const RATE_LIMITS = {
-  MAX_REQUESTS_PER_DAY: 20,     // 每日最大请求数
+  MAX_REQUESTS_PER_DAY: 3,      // 每日最大请求数
   COOLDOWN_SECONDS: 8,          // 两次请求之间的冷却时间（秒）
 } as const;
 
