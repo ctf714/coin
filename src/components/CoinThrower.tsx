@@ -44,6 +44,8 @@ interface CoinThrowerProps {
   resetViewSignal: number;
   onModelLoaded?: () => void;
   isMobile?: boolean;
+  /** 随机数生成后立即调用，可修改硬币结果（用于凶卦过滤等） */
+  augmentResult?: (results: boolean[]) => boolean[];
 }
 
 // 单个铜钱组件
@@ -138,6 +140,7 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
   resetViewSignal,
   onModelLoaded,
   isMobile,
+  augmentResult,
 }) => {
   const gltf = useSharedGLTF();
   const modelScene = gltf?.scene ?? null;
@@ -231,7 +234,21 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
         const totalSpin = (airSpinCount + 1) * Math.PI * 2;
         return { ...coin, isHeads, totalSpin };
       });
-      setCoins(newCoins);
+
+      // 凶卦过滤：随机数生成后立即判断并修正，动画使用修正后的结果
+      let finalCoins = newCoins;
+      if (augmentResult) {
+        const rawResults = newCoins.map(c => c.isHeads);
+        const filtered = augmentResult(rawResults);
+        finalCoins = newCoins.map((coin, i) => ({
+          ...coin,
+          isHeads: filtered[i],
+        }));
+      }
+      // 保存修正后的结果，onThrowComplete 也使用修正后的值
+      const isHeadsResults = finalCoins.map(c => c.isHeads);
+
+      setCoins(finalCoins);
 
       const throwVec = new THREE.Vector3(0, 0.45, 1).normalize();
       const totalDuration = 1600;
@@ -266,7 +283,7 @@ const CoinThrower: React.FC<CoinThrowerProps> = ({
           requestAnimationFrame(animate);
         } else {
           setPhase('done');
-          onThrowComplete(newCoins.map(c => c.isHeads));
+          onThrowComplete(isHeadsResults);
         }
       };
 

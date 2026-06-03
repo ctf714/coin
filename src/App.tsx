@@ -260,6 +260,19 @@ function App() {
     }, 1000);
   };
 
+  // 凶卦过滤：随机数生成后立即判断，3个硬币结果全部翻转 = 爻的阴阳翻转
+  const augmentCoinResult = useCallback((coinResults: boolean[]): boolean[] => {
+    if (trigrams.length !== 5 || AUSPICIOUS_HEXAGRAM_RATE >= 1) return coinResults;
+    const result = calculateFromCoinResults(coinResults);
+    const trial: Trigram = { value: result.result, yinYang: result.yinYang, changing: result.changing };
+    const check = [...trigrams, trial];
+    if (IN_AUSPICIOUS_HEXAGRAMS.has(getGuaNumber(check)!) && Math.random() >= AUSPICIOUS_HEXAGRAM_RATE) {
+      // 3币全翻 = 阴阳必翻（老阳↔老阴, 少陽↔少陰），且变爻性质不变
+      return coinResults.map(r => !r);
+    }
+    return coinResults;
+  }, [trigrams]);
+
   const coinRotationX = -0.7854;
   const coinRotationY = 1.4312;
   const coinRotationZ = 0.9250;
@@ -276,26 +289,12 @@ function App() {
   };
 
   const handleThrowComplete = (coinResults: boolean[]) => {
-    let result = calculateFromCoinResults(coinResults);
-    let newTrigram: Trigram = {
+    const result = calculateFromCoinResults(coinResults);
+    const newTrigram: Trigram = {
       value: result.result,
       yinYang: result.yinYang,
       changing: result.changing,
     };
-
-    // 凶卦控制：第6爻落定时，如果结果是凶卦且概率不中，翻最后一爻
-    if (trigrams.length === 5 && AUSPICIOUS_HEXAGRAM_RATE < 1) {
-      const check = [...trigrams, newTrigram];
-      if (IN_AUSPICIOUS_HEXAGRAMS.has(getGuaNumber(check)!) && Math.random() >= AUSPICIOUS_HEXAGRAM_RATE) {
-        // 翻转最后一爻的阴阳，且改为不变爻（保持卦象稳定）
-        newTrigram = {
-          value: result.result,
-          yinYang: result.yinYang === 'yang' ? 'yin' : 'yang',
-          changing: false,
-        };
-      }
-    }
-
     setTrigrams(prev => [...prev, newTrigram]);
     setIsThrowing(false);
     setTimeout(() => setCanThrow(true), 500);
@@ -559,6 +558,7 @@ function App() {
           resetViewSignal={resetViewSignal}
           onModelLoaded={() => setModelLoaded(true)}
           isMobile={m}
+          augmentResult={augmentCoinResult}
         />
       </div>
 
