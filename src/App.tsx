@@ -546,12 +546,12 @@ function App() {
 
       {/* 抽屉面板 — 桌面右侧抽屉，移动端顶部抽屉（从上方滑下） */}
       <div
-        className={`absolute z-10 overflow-y-auto bg-white/90 ${
+        className={`absolute z-10 flex bg-white/90 ${
           isResizing ? '' : 'transition-all duration-700'
         } ${
           m
-            ? 'w-full left-0 right-0 top-0 border-b-2 border-black'
-            : 'top-0 right-0 bottom-0 border-l-2 border-black'
+            ? 'flex-col w-full left-0 right-0 top-0 border-b-2 border-black'
+            : 'flex-row-reverse top-0 right-0 bottom-0 border-l-2 border-black'
         } ${
           drawerOpen
             ? 'translate-x-0 translate-y-0'
@@ -563,21 +563,7 @@ function App() {
             : { width: `${effectiveRatio * 100}%` }
         }
       >
-        {/* 拖拽手柄 */}
-        {drawerOpen && (
-          <div
-            className={`absolute z-20 bg-black/10 hover:bg-black/30 transition-colors ${
-              isResizing ? 'bg-black/30' : ''
-            } ${
-              m
-                ? 'bottom-0 left-0 right-0 h-2 cursor-row-resize'
-                : 'left-0 top-0 bottom-0 w-2 cursor-col-resize'
-            }`}
-            onMouseDown={handleResizeStart}
-            onTouchStart={handleResizeStart}
-          />
-        )}
-        <div className={`flex flex-col justify-center min-h-full ${m ? 'p-3' : 'p-5'}`}>
+        <div className={`flex-1 min-h-0 overflow-y-auto ${m ? 'p-3' : 'p-5'}`}>
           {/* 头部：进度 + 语言切换 */}
           <div className={`flex items-center justify-between ${m ? 'mb-3' : 'mb-4'}`}>
             <div className={`text-black font-bold ${m ? 'text-xs' : 'text-sm'}`}>
@@ -639,6 +625,20 @@ function App() {
             </div>
           </div>
         </div>
+        {/* 拖拽手柄 — 移动端在抽屉底部，桌面端在抽屉左边缘，皆不受滚动影响 */}
+        {drawerOpen && (
+          <div
+            className={`shrink-0 z-20 bg-black/10 hover:bg-black/30 transition-colors ${
+              isResizing ? 'bg-black/30' : ''
+            } ${
+              m
+                ? 'h-2 cursor-row-resize'
+                : 'w-2 cursor-col-resize'
+            }`}
+            onMouseDown={handleResizeStart}
+            onTouchStart={handleResizeStart}
+          />
+        )}
       </div>
     </div>
   );
