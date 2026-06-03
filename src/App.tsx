@@ -15,6 +15,27 @@ const LABELS = {
   complete:   { cn: '完成', en: 'Complete' },
 } as const;
 
+// 🔧 凶卦控制参数：0 = 永不出凶卦, 1 = 正常随机。默认 0，需要凶卦时改为 1
+const AUSPICIOUS_HEXAGRAM_RATE = 0;
+
+// 传统凶卦列表（文王卦序）。仅控制"本卦"是否可出，变卦不受影响。
+const IN_AUSPICIOUS_HEXAGRAMS = new Set<number>([
+   6,  // 讼   Conflict
+  12,  // 否   Stagnation
+  18,  // 蛊   Decay
+  23,  // 剥   Splitting Apart
+  28,  // 大过 Great Exceeding
+  29,  // 坎   The Abyss
+  36,  // 明夷 Darkening of the Light
+  38,  // 睽   Opposition
+  39,  // 蹇   Obstruction
+  44,  // 姤   Temptation
+  47,  // 困   Oppression
+  54,  // 归妹 Marrying Maiden
+  62,  // 小过 Small Exceeding
+  64,  // 未济 Before Completion
+]);
+
 const MYSTICAL_SAYINGS = [
   { cn: '易有太极，是生两仪，两仪生四象，四象生八卦。', en: 'In the Yi there is the Supreme Polarity, which gives rise to the Two Modes; the Two Modes give rise to the Four Images; the Four Images give rise to the Eight Trigrams.' },
   { cn: '一阴一阳之谓道，继之者善也，成之者性也。', en: 'One yin and one yang — this is called the Dao. To follow it is goodness; to fulfill it is innate nature.' },
@@ -250,12 +271,26 @@ function App() {
   };
 
   const handleThrowComplete = (coinResults: boolean[]) => {
-    const result = calculateFromCoinResults(coinResults);
-    const newTrigram: Trigram = {
+    let result = calculateFromCoinResults(coinResults);
+    let newTrigram: Trigram = {
       value: result.result,
       yinYang: result.yinYang,
       changing: result.changing,
     };
+
+    // 凶卦控制：第6爻落定时，如果结果是凶卦且概率不中，翻最后一爻
+    if (trigrams.length === 5 && AUSPICIOUS_HEXAGRAM_RATE < 1) {
+      const check = [...trigrams, newTrigram];
+      if (IN_AUSPICIOUS_HEXAGRAMS.has(getGuaNumber(check)!) && Math.random() >= AUSPICIOUS_HEXAGRAM_RATE) {
+        // 翻转最后一爻的阴阳，且改为不变爻（保持卦象稳定）
+        newTrigram = {
+          value: result.result,
+          yinYang: result.yinYang === 'yang' ? 'yin' : 'yang',
+          changing: false,
+        };
+      }
+    }
+
     setTrigrams(prev => [...prev, newTrigram]);
     setIsThrowing(false);
     setTimeout(() => setCanThrow(true), 500);
