@@ -428,12 +428,12 @@ function App() {
         </div>
       )}
 
-      {/* 3D 场景 — 桌面左移，移动端上缩 */}
+      {/* 3D 场景 — 桌面左移，移动端抽屉打开时整体下沉 */}
       <div
         className={`absolute inset-0 transition-all duration-700 ${
           drawerOpen
             ? m
-              ? 'bottom-[42%] right-0 left-0 top-0'
+              ? 'top-[42%] right-0 left-0 bottom-0'
               : 'md:right-1/3 bottom-0'
             : 'right-0 bottom-0'
         }`}
@@ -463,19 +463,15 @@ function App() {
         />
       </div>
 
-      {/* 按钮 — 桌面左移，移动端贴 3D 区底部（抽屉打开时上移避免遮挡） */}
+      {/* 按钮 — 桌面左移跟进抽屉，移动端始终底部 */}
       <div
         className={`absolute z-20 transition-all duration-700 ${
           m
-            ? drawerOpen
-              ? 'bottom-[44%] left-0 right-0'
-              : 'bottom-4 left-0 right-0'
+            ? 'bottom-4 left-0 right-0'
             : 'bottom-6 left-0'
         } ${
-          drawerOpen
-            ? m
-              ? 'right-0'
-              : 'md:right-1/3 right-0'
+          drawerOpen && !m
+            ? 'md:right-1/3 right-0'
             : 'right-0'
         }`}
       >
@@ -503,16 +499,16 @@ function App() {
         </div>
       </div>
 
-      {/* 抽屉面板 — 桌面右侧抽屉，移动端底部抽屉 */}
+      {/* 抽屉面板 — 桌面右侧抽屉，移动端顶部抽屉（从上方滑下） */}
       <div
         className={`absolute z-10 overflow-y-auto transition-all duration-700 bg-white/90 ${
           m
-            ? 'w-full h-[42%] left-0 right-0 bottom-0 border-t-2 border-black'
+            ? 'w-full h-[42%] left-0 right-0 top-0 border-b-2 border-black'
             : 'w-1/3 top-0 right-0 bottom-0 border-l-2 border-black'
         } ${
           drawerOpen
             ? 'translate-x-0 translate-y-0'
-            : m ? 'translate-y-full' : 'translate-x-full'
+            : m ? '-translate-y-full' : 'translate-x-full'
         }`}
       >
         <div className={`flex flex-col justify-center min-h-full ${m ? 'p-3' : 'p-5'}`}>
