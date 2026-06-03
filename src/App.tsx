@@ -115,24 +115,24 @@ const GuaLines: React.FC<{
           ) : (
             <div className={`${yangW} ${yangH} bg-gray-200`} />
           )}
-          {/* 箭头+变卦爻 — 始终占位，transition opacity */}
-          <div
-            className={`flex items-center ${gapS} ${mlS} transition-opacity duration-1000 ${hasArrow ? 'opacity-60' : 'opacity-0'}`}
-          >
-            <span className={`${arrS} ${arrW} text-center shrink-0`}>→</span>
-            {ct ? (
-              ct.yinYang === 'yang' ? (
-                <div className={`${yangW} ${yangH} bg-black`} />
+          {/* 箭头+变卦爻 — 起卦中不占位以保持居中，完成后出现 */}
+          {hasArrow && (
+            <div className={`flex items-center ${gapS} ${mlS} opacity-60`}>
+              <span className={`${arrS} ${arrW} text-center shrink-0`}>→</span>
+              {ct ? (
+                ct.yinYang === 'yang' ? (
+                  <div className={`${yangW} ${yangH} bg-black`} />
+                ) : (
+                  <div className="flex gap-0.5">
+                    <div className={`${yinW} ${yinH} bg-black`} />
+                    <div className={`${yinW} ${yinH} bg-black`} />
+                  </div>
+                )
               ) : (
-                <div className="flex gap-0.5">
-                  <div className={`${yinW} ${yinH} bg-black`} />
-                  <div className={`${yinW} ${yinH} bg-black`} />
-                </div>
-              )
-            ) : (
-              <div className={`${yangW} ${yangH}`} />
-            )}
-          </div>
+                <div className={`${yangW} ${yangH}`} />
+              )}
+            </div>
+          )}
         </div>
       );
     })}
